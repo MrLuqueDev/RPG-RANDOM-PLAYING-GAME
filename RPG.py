@@ -21,16 +21,16 @@ import math
 # Game variables
 
 game = True
-turn = None
-battling = None
-encounter = None
-defending = None
-edefending = None
+turn = 0
+battling = 0
+encounter = 0
+defending = 0
+edefending = 0
 # structure variables
 
 structure_name = ""
-has_chest = None
-has_enemies = None
+has_chest = 0
+has_enemies = 0
 
 # player variables
 
@@ -39,19 +39,22 @@ keys = 0
 coins = 0
 bombs = 0
 level = 0
-HP = None
-RST = None
-ATK = None
-SPD = None
-LCK = None
+HP = 0
+RST = 0
+ATK = 0
+SPD = 0
+LCK = 0
+flee = 0
 
 # enemy variables
 
-eHP = None
-eRST = None
-eATK = None
-eSPD = None
+eHP = 0
+eRST = 0
+eATK = 0
+eSPD = 0
 elevel = 0
+eflee = 0
+
 
 # FUNCTIONS :3
 
@@ -63,10 +66,11 @@ def defstats():
     global LCK
 
     HP = random.randint(75, 150)
-    RST = random.randint(1,5)
-    ATK = round(math.log(random.randint(5,15)))
+    RST = random.randint(1, 5)
+    ATK = round(math.log(random.randint(5, 15)))
     SPD = 10
     LCK = random.randint(-10, 10)
+
 
 def defenemystats():
     global eHP
@@ -76,26 +80,29 @@ def defenemystats():
     global elevel
 
     eHP = random.randint(50, 90) + level
-    eRST = random.randint(1,5)
-    eATK = round(math.log(random.randint(4,10)))
+    eRST = random.randint(1, 5)
+    eATK = round(math.log(random.randint(4, 10)))
     eSPD = 2
+
 
 def RandName(char_min, char_max):
     for i in range(random.randint(char_min, char_max)):
-            global name
-            name += random.choice('abcdefghijklmnopqrstuvwxyz')
+        global name
+        name += random.choice('abcdefghijklmnopqrstuvwxyz')
+
 
 def wait(s):
-     time.sleep(s)
+    time.sleep(s)
+
 
 def GetStructureInfo():
     global structure_name
     global has_chest
     global has_enemies
-    has_enemies = random.randint(0,1)
-    encounter = random.randint(0,1)
-    has_chest = random.randint(0,1)
-    randomstructure = random.randint(1,7)
+    has_enemies = random.randint(0, 1)
+    encounter = random.randint(0, 1)
+    has_chest = random.randint(0, 1)
+    randomstructure = random.randint(1, 7)
     if randomstructure == 1:
         structure_name = "Village"
     elif randomstructure == 2:
@@ -111,8 +118,8 @@ def GetStructureInfo():
     else:
         structure_name = "Dungeon"
 
-def Structure(s_name, s_chest, s_enemies):
 
+def Structure(s_name, s_chest, s_enemies):
     # when called, the code must specify the name, if it has chests and if it has enemies.
     # here we make it check so if the name is X then it will do this and that
 
@@ -159,80 +166,89 @@ def Structure(s_name, s_chest, s_enemies):
             wait(1)
     if has_enemies == 1 and encounter == 1:
         battle()
+
+
 # here we go
 
 def attack():
-
     # turn 0 is the enemy's turn, 1 is your turn
 
-    global turn
+    global turn, HP, eHP
 
     if turn == 0:
-        HP -= eATK + (RST*0.5)
+        HP -= eATK + (RST * 0.5)
     elif turn == 1:
-        eHP -= ATK + (eRST*0.5)
-        
+        eHP -= ATK + (eRST * 0.5)
+
 
 def defend():
-    global turn
+    global turn, RST, eRST
 
     if turn == 1:
-        RST = RST * 2
+        RST *= 2
     elif turn == 0:
-        eRST = eRST * 2
+        eRST *= 2
+
 
 def StopDefend():
     global turn
+    global RST
+    global eRST
+
     if turn == 1:
-        RST = RST // 2
+        RST //= 2
     elif turn == 0:
-        eRST = RST // 2
+        eRST //= 2
+
 
 def item():
     # we need a list with all items
     return
 
+
 def BattleEnd():
-    battling == False
-
-def battle():
-
     global battling
 
-    while battling == True:
-        rnd_action = random.randint(1,3)
+    battling = False
+
+
+def battle():
+    global battling, flee, eflee
+
+    while battling:
+        rnd_action = random.randint(1, 3)
 
         if HP <= 0:
-           print(name, "has died\nlife stats")
-           game = False
+            print(name, "has died\nlife stats")
+            game = False
         if eHP <= 0:
             # kills the enemy and gives you (xp) money, bombs & keys
             return
 
         if eHP <= 10:
-            eflee = random.randint(0,1)
+            eflee = random.randint(0, 1)
 
         if eflee == 1:
             print("the enemy is fleeing...")
 
         if HP <= 10:
-            flee = random.randint(0,1)
+            flee = random.randint(0, 1)
 
         if flee == 1:
             print(name, "decided to flee")
 
-
         if rnd_action == 1:
             print(name, "has decided to attack!")
-            attack(1)
+            attack()
         elif rnd_action == 2:
             print(name, "has decided to defend!")
             defend()
         elif rnd_action == 3:
             print(name, "has decided to use an item!")
             item()
-        if battling == False:
+        if not battling:
             BattleEnd()
+
 
 # Main game code
 # hardcode a game loop so whenever the player dies it can break, and also the structures and shit can loop indefinetely
@@ -242,7 +258,7 @@ def battle():
 question = int(input("Want a random name (0) or your own name (1)?: "))
 
 if question == 0:
-    RandName(1,10)
+    RandName(1, 10)
 elif question == 1:
     name = input("What is your name?: ")
 else:
@@ -250,24 +266,23 @@ else:
 
 print("your name is: ", name)
 wait(2.5)
-print("These are your stats:")
+print("These are your stats: ")
 defstats()
 wait(1)
 print("HEALTH (HP):", HP)
-wait(0.4)
+wait(.4)
 print("RESISTANCE (RST):", RST)
-wait(0.4)
+wait(.4)
 print("ATTACK (ATK):", ATK)
-wait(0.4)
+wait(.4)
 print("SPEED (SPD):", SPD)
-wait(0.4)
+wait(.4)
 print("LUCK (LCK):", LCK)
 wait(2)
-# pyautogui.typewrite("These are your stats: ") --this should do a typewrite effect
 
 # game starts
 
-while game == True:
+while game:
     if HP <= 0:
         break
     GetStructureInfo()
