@@ -26,6 +26,7 @@ battling = 0
 encounter = 0
 defending = 0
 edefending = 0
+content = None
 # structure variables
 
 structure_name = ""
@@ -54,6 +55,10 @@ eATK = 0
 eSPD = 0
 elevel = 0
 eflee = 0
+
+# item Values
+
+health_potions = 0
 
 
 # FUNCTIONS :3
@@ -94,6 +99,15 @@ def RandName(char_min, char_max):
 def wait(s):
     time.sleep(s)
 
+def Chest():
+    global content
+    randmath = random.randint(1,3)
+    if content == 1:
+        item += 1
+    elif content == 2:
+        item += 1
+    elif content == 3:
+        item += 1 # add items as values and make them sum here
 
 def GetStructureInfo():
     global structure_name
