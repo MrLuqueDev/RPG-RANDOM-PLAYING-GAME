@@ -2,8 +2,10 @@
 # GET RANDOM ATTACK DAMAGE AND SHIT | DONE
 # RANDOM GENERATION (get random structures and stuff) | done as well man wtf we're cooking brah
 # Random enemies (types and stats and names aswell) | sorta done????
-# game objects | lmao fuck no
+# game items | lmao fuck no
 # if you're defending the enemy can't defend (and viceversa?) | WE HAVEN'T EVEN STARTED LLOLOLOLOLOOOLOL
+# make enemy types??? | still yet to be aproved
+# name codes (put this in the getstats function and if name == "name": stats = value) | not started
 
 # --------------------------------------------------------------------------------
 
@@ -86,7 +88,7 @@ def RandName(char_min, char_max):
 def wait(s):
      time.sleep(s)
 
-def GetStructure():
+def GetStructureInfo():
     global structure_name
     global has_chest
     global has_enemies
@@ -118,30 +120,43 @@ def Structure(s_name, s_chest, s_enemies):
 
     if s_name == "Village":
         print("You are in a village")
+        wait(1)
         if s_chest == 1:
             print("This", strname, "has a chest!")
+            wait(1)
         else:
             print("This", strname, "doesn't have a chest.")
+            wait(1)
     elif s_name == "Forest":
         print("You are in a forest")
+        wait(1)
     elif s_name == "Temple":
         print("You are in a temple")
+        wait(1)
         if s_chest == 1:
             print("This", strname, "has a chest!")
+            wait(1)
         else:
             print("This", strname, "doesn't have a chest.")
+            wait(1)
     elif s_name == "Plains":
         print("You are in a plains")
+        wait(1)
     elif s_name == "Desert":
         print("You are in a desert")
+        wait(1)
     elif s_name == "Swamp":
         print("You are in a swamp")
+        wait(1)
     else:
         print("You are in a dungeon ")
+        wait(1)
         if s_chest == 1:
             print("This", strname, "has a chest!")
+            wait(1)
         else:
             print("This", strname, "doesn't have a chest.")
+            wait(1)
     if has_enemies == 1 and encounter == 1:
         battle()
 # here we go
@@ -247,6 +262,7 @@ wait(0.4)
 print("SPEED (SPD):", SPD)
 wait(0.4)
 print("LUCK (LCK):", LCK)
+wait(2)
 # pyautogui.typewrite("These are your stats: ") --this should do a typewrite effect
 
 # game starts
@@ -254,5 +270,7 @@ print("LUCK (LCK):", LCK)
 while game == True:
     if HP <= 0:
         break
-    GetStructureName()
+    GetStructureInfo()
     Structure(structure_name, has_chest, has_enemies)
+    wait(1)
+    # game = False (endgame (haha avengers reference))
