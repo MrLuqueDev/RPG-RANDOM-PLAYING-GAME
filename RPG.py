@@ -177,16 +177,16 @@ def defend():
     global turn
 
     if turn == 1:
-        RST * 2
+        RST = RST * 2
     elif turn == 0:
-        eRST * 2
+        eRST = eRST * 2
 
 def StopDefend():
     global turn
     if turn == 1:
-        RST // 2
+        RST = RST // 2
     elif turn == 0:
-        eRST // 2
+        eRST = RST // 2
 
 def item():
     # we need a list with all items
