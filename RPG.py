@@ -206,9 +206,7 @@ def Chest():
         print("You can't open this chest because you don't have a key to open it")
 
 def GetStructureInfo():
-    global structure_name
-    global has_chest
-    global has_enemies
+    global structure_name, has_enemies, has_chest
     has_enemies = random.randint(0, 1)
     encounter = random.randint(0, 1)
     has_chest = random.randint(0, 1)
@@ -305,9 +303,7 @@ def defend():
 
 
 def StopDefend():
-    global turn
-    global RST
-    global eRST
+    global turn, RST, eRST
 
     if turn == 1:
         RST //= 2
