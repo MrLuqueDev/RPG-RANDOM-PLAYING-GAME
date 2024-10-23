@@ -374,6 +374,9 @@ elif question == 1:
 else:
     print("That's not a valid answer, kys fag")
 
+if name == "hugo":
+    game = False
+
 print("your name is: ", name)
 wait(2.5)
 print("These are your stats: ")
