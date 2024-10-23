@@ -239,8 +239,18 @@ def Structure(s_name, s_chest, s_enemies):
         if s_chest == 1:
             print("This", strname, "has a chest!")
             wait(1)
-            Chest()
+            Chest(False, None)
             wait(1)
+        shop = random.randint(1,3)
+	if shop == 1:
+	    print(name, "has decided to go to a potion shop")
+	    
+	elif shop == 2:
+	    print(name, "has decided to go to a armor shop")
+	    
+	elif shop == 3:
+	    print(name, "has decided to go to a general shop")
+	    
         else:
             print("This", strname, "doesn't have a chest.")
             wait(1)
@@ -253,7 +263,7 @@ def Structure(s_name, s_chest, s_enemies):
         if s_chest == 1:
             print("This", strname, "has a chest!")
             wait(1)
-            Chest()
+            Chest(False, None)
             wait(1)
         else:
             print("This", strname, "doesn't have a chest.")
@@ -273,7 +283,7 @@ def Structure(s_name, s_chest, s_enemies):
         if s_chest == 1:
             print("This", strname, "has a chest!")
             wait(1)
-            Chest()
+            Chest(False, None)
             wait(1)
         else:
             print("This", strname, "doesn't have a chest.")
