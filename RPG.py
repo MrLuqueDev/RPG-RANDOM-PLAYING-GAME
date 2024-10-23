@@ -95,12 +95,9 @@ item_list = [item_list_pot, ]
 # FUNCTIONS :3
 
 def defstats():
-    global HP
-    global RST
-    global ATK
-    global SPD
-    global LCK
 
+    global HP, RST, ATK, SPD, LCK
+    
     HP = random.randint(75, 150)
     RST = random.randint(1, 5)
     ATK = round(math.log(random.randint(5, 15)))
@@ -122,12 +119,9 @@ def FunNames():
         LCK = -10
 
 def defenemystats():
-    global eHP
-    global eRST
-    global eATK
-    global eSPD
-    global elevel
 
+    global HP, RST, ATK, SPD, LCK
+    
     eHP = random.randint(50, 90) + level
     eRST = random.randint(1, 5)
     eATK = round(math.log(random.randint(4, 10)))
@@ -344,10 +338,40 @@ def StopDefend():
     elif turn == 0:
         eRST //= 2
 
+def use_item():
+
+    global HP, RST, ATK, SPD, LCK
+
+    
 
 def item():
-    # we need a list with all items
-    return
+    
+    global HP, RST, ATK, SPD, LCK
+    
+    if HP >= 50:
+	lHP = random.randint(1, 6)
+	if lHP == 1 or 2 or 3:
+	# more probs to use a t1 HP pot
+	elif lHP == 4 or 5:
+	# more probs to use a t2 HP pot
+	elif lHP == 6:
+	# more probs to use a t3 HP pot
+
+    # make an if statement that if the enemy defended you get more probs to a RST pot
+	
+    rndlist = random.randint(1, 3)
+    
+    if rndlist == 1:
+        rnditem = random.choice(item_list_pot)
+    elif rndlist == 2:
+        rnditem = random.choice(item_list_)
+    elif rndlist == 3:
+        rnditem = random.choice(item_list_)
+
+    if rnditem == 0:
+		# restart
+    elif rnditem <= 1:
+        use_item()
 
 
 def BattleEnd():
