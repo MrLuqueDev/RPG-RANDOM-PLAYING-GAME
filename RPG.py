@@ -77,11 +77,11 @@ LCK_pot_t1 = 0
 LCK_pot_t2 = 0
 LCK_pot_t3 = 0
 
-item_list_pot_t1 = [HP_pot_t1, RST_pot_t1, ATK_pot_t1, SPD_pot_t1, LCK_pot_t1]
-item_list_pot_t2 = [HP_pot_t2, RST_pot_t2, ATK_pot_t2, SPD_pot_t2, LCK_pot_t2]
-item_list_pot_t3 = [HP_pot_t3, RST_pot_t3, ATK_pot_t3, SPD_pot_t3, LCK_pot_t3]
-
-item_list_pot = [item_list_pot_t1, item_list_pot_t2, item_list_pot_t3]
+item_list_pot = [
+    [HP_pot_t1, RST_pot_t1, ATK_pot_t1, SPD_pot_t1, LCK_pot_t1],
+    [HP_pot_t2, RST_pot_t2, ATK_pot_t2, SPD_pot_t2, LCK_pot_t2],
+    [HP_pot_t3, RST_pot_t3, ATK_pot_t3, SPD_pot_t3, LCK_pot_t3]
+]
 
 item_list = [item_list_pot, ]
 
@@ -129,51 +129,51 @@ def Chest():
     randmath = 0
     if keys >= 1 and not structure_name == "Village":
         keys -= 1
-        random.randint(1,33)
+        random.randint(1, 33)
         if content == 1 or 2 or 3:
-            item_list_pot_t1[0] += 1
+            item_list_pot[0] += 1
             print("You've gained a tier 1 HP potion")
         elif content == 4 or 5 or 6:
-            item_list_pot_t1[1] += 1
+            item_list_pot[1] += 1
             print("You've gained a tier 1 RESISTANCE potion")
         elif content == 7 or 8 or 9:
-            item_list_pot_t1[2] += 1
+            item_list_pot[2] += 1
             print("You've gained a tier 1 ATTACK potion")
         elif content == 10 or 11 or 12:
-            item_list_pot_t1[3] += 1
+            item_list_pot[3] += 1
             print("You've gained a tier 1 SPEED potion")
         elif content == 13 or 14 or 15:
-            item_list_pot_t1[4] += 1
+            item_list_pot[4] += 1
             print("You've gained a tier 1 LUCK potion")
         elif content == 16 or 17:
-            item_list_pot_t2[0] += 1
+            item_list_pot[5] += 1
             print("You've gained a tier 2 HP potion")
         elif content == 18 or 19:
-            item_list_pot_t2[1] += 1
+            item_list_pot[6] += 1
             print("You've gained a tier 2 RESISTANCE potion")
         elif content == 20 or 21:
-            item_list_pot_t2[2] += 1
+            item_list_pot[7] += 1
             print("You've gained a tier 2 ATTACK potion")
         elif content == 22 or 23:
-            item_list_pot_t2[3] += 1
+            item_list_pot[8] += 1
             print("You've gained a tier 2 SPEED potion")
         elif content == 24 or 25:
-            item_list_pot_t2[4] += 1
+            item_list_pot[9] += 1
             print("You've gained a tier 2 LUCK potion")
         elif content == 26:
-            item_list_pot_t3[0] += 1
+            item_list_pot[10] += 1
             print("You've gained a tier 3 HP potion")
         elif content == 27:
-            item_list_pot_t3[1] += 1
+            item_list_pot[11] += 1
             print("You've gained a tier 3 RESISTANCE potion")
         elif content == 28:
-            item_list_pot_t3[2] += 1
+            item_list_pot[12] += 1
             print("You've gained a tier 3 ATTACK potion")
         elif content == 29:
-            item_list_pot_t3[3] += 1
+            item_list_pot[13] += 1
             print("You've gained a tier 3 SPEED potion")
         elif content == 30:
-            item_list_pot_t3[4] += 1
+            item_list_pot[14] += 1
             print("You've gained a tier 3 LUCK potion")
         elif content == 31:
             randmath = random.randint(5,12)
