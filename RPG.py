@@ -6,6 +6,11 @@
 # if you're defending the enemy can't defend (and viceversa?) | WE HAVEN'T EVEN STARTED LLOLOLOLOLOOOLOL
 # make enemy types??? | still yet to be aproved
 # name codes (put this in the getstats function and if name == "name": stats = value) | not started
+# Make quests (when you go to a village there's a 1/5 probability that you can encounter an npc (math.random (1,5) if random == 5)
+# if you encounter the npc it'll tell you that he needs you to find something in a certain biome. once you go to those biomes
+# you have a probability of 1/2 to encounter it. when you find it you'll forcedly encounter the npc in the next village you go to and
+# he will reward you with something for your actions)
+# implement days in villages, you can stay there for 1/3 days (randint). enemies and chests randomize again except the chest probabilities are now 1/4 and shops stay the same
 
 # --------------------------------------------------------------------------------
 
@@ -27,16 +32,18 @@ encounter = 0
 defending = 0
 edefending = 0
 content = None
+
 # structure variables
 
 structure_name = ""
 has_chest = 0
 has_enemies = 0
+has_shop = 0
 
 # player variables
 
 name = ""
-keys = 0
+keys = 100
 coins = 0
 bombs = 0
 level = 0
@@ -100,6 +107,19 @@ def defstats():
     SPD = 10
     LCK = random.randint(-10, 10)
 
+def FunNames():
+    global name, game, HP, RST, LCK, ATK, SPD
+    if name == "hugo":
+        game = False
+    elif name == "frisk":
+        input("Warning, This name will make your life a literal living nightmare. do you wish to procceed? (y/n): ")
+        wait(1.5)
+        print("well too bad, you already chose it now HAAHAHAHAHAHAHA")
+        HP = 50
+        RST = 1
+        ATK = 5
+        SPD = 5
+        LCK = -10
 
 def defenemystats():
     global eHP
@@ -122,7 +142,6 @@ def RandName(char_min, char_max):
 
 def wait(s):
     time.sleep(s)
-
 
 def Chest():
     global content, coins, bombs, keys, structure_name
@@ -239,18 +258,8 @@ def Structure(s_name, s_chest, s_enemies):
         if s_chest == 1:
             print("This", strname, "has a chest!")
             wait(1)
-            Chest(False, None)
-            wait(1)
-        shop = random.randint(1,3)
-	if shop == 1:
-	    print(name, "has decided to go to a potion shop")
-	    
-	elif shop == 2:
-	    print(name, "has decided to go to a armor shop")
-	    
-	elif shop == 3:
-	    print(name, "has decided to go to a general shop")
-	    
+            Chest()
+            wait(1)  
         else:
             print("This", strname, "doesn't have a chest.")
             wait(1)
@@ -263,7 +272,7 @@ def Structure(s_name, s_chest, s_enemies):
         if s_chest == 1:
             print("This", strname, "has a chest!")
             wait(1)
-            Chest(False, None)
+            Chest()
             wait(1)
         else:
             print("This", strname, "doesn't have a chest.")
@@ -283,13 +292,28 @@ def Structure(s_name, s_chest, s_enemies):
         if s_chest == 1:
             print("This", strname, "has a chest!")
             wait(1)
-            Chest(False, None)
+            Chest()
             wait(1)
         else:
             print("This", strname, "doesn't have a chest.")
             wait(1)
     if has_enemies == 1 and encounter == 1:
         battle()
+    has_shop = random.randint(0,1)
+    if structure_name == "Village":
+        if has_shop == 0:
+            print("This village doesn't have a shop")
+        elif has_shop == 1:
+            print("This village has a shop!")
+        shop = random.randint(1,3)
+        if has_shop == 1:
+            wait(1)
+            if shop == 1:
+                print(name, "has decided to go to a potion shop")
+            elif shop == 2:
+                print(name, "has decided to go to a armor shop")
+            elif shop == 3:
+                print(name, "has decided to go to a general shop")
 # here we go
 
 def attack():
@@ -382,15 +406,15 @@ if question == 0:
 elif question == 1:
     name = input("What is your name?: ")
 else:
-    print("That's not a valid answer, kys fag")
-
-if name == "hugo":
-    game = False
-
+    print("That's not a valid answer, picking a random name instead")
+    RandName(1,10)
+wait(1)
 print("your name is: ", name)
+wait(0.5)
+defstats()
+FunNames()
 wait(2.5)
 print("These are your stats: ")
-defstats()
 wait(1)
 print("HEALTH (HP):", HP)
 wait(.4)
@@ -412,6 +436,3 @@ while game:
     Structure(structure_name, has_chest, has_enemies)
     wait(1)
     # game = False (endgame (haha avengers reference))
-
-
-
