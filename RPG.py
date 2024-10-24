@@ -39,6 +39,7 @@ structure_name = ""
 has_chest = 0
 has_enemies = 0
 has_shop = 0
+has_item = random.randint(0,5)
 
 # player variables
 
@@ -85,9 +86,9 @@ LCK_pot_t2 = 0
 LCK_pot_t3 = 0
 
 item_list_pot = [
-    [HP_pot_t1, RST_pot_t1, ATK_pot_t1, SPD_pot_t1, LCK_pot_t1],
-    [HP_pot_t2, RST_pot_t2, ATK_pot_t2, SPD_pot_t2, LCK_pot_t2],
-    [HP_pot_t3, RST_pot_t3, ATK_pot_t3, SPD_pot_t3, LCK_pot_t3]
+    HP_pot_t1, RST_pot_t1, ATK_pot_t1, SPD_pot_t1, LCK_pot_t1,
+    HP_pot_t2, RST_pot_t2, ATK_pot_t2, SPD_pot_t2, LCK_pot_t2,
+    HP_pot_t3, RST_pot_t3, ATK_pot_t3, SPD_pot_t3, LCK_pot_t3
 ]
 
 item_list = [item_list_pot, ]
@@ -95,9 +96,12 @@ item_list = [item_list_pot, ]
 # FUNCTIONS :3
 
 def defstats():
+    global HP
+    global RST
+    global ATK
+    global SPD
+    global LCK
 
-    global HP, RST, ATK, SPD, LCK
-    
     HP = random.randint(75, 150)
     RST = random.randint(1, 5)
     ATK = round(math.log(random.randint(5, 15)))
@@ -107,6 +111,12 @@ def defstats():
 def FunNames():
     global name, game, HP, RST, LCK, ATK, SPD
     if name == "hugo":
+        wait(1)
+        print("hugo used: Suicide!")
+        wait(0.5)
+        print("It's super effective!")
+        wait(0.5)
+        print("hugo is now fucking dead!")
         game = False
     elif name == "frisk":
         input("Warning, This name will make your life a literal living nightmare. do you wish to procceed? (y/n): ")
@@ -117,11 +127,21 @@ def FunNames():
         ATK = 5
         SPD = 5
         LCK = -10
+    elif name == "govus":
+        HP = 149
+        RST = 1
+        ATK = 2
+        SPD = 10
+        LCK = 10
+    
 
 def defenemystats():
+    global eHP
+    global eRST
+    global eATK
+    global eSPD
+    global elevel
 
-    global HP, RST, ATK, SPD, LCK
-    
     eHP = random.randint(50, 90) + level
     eRST = random.randint(1, 5)
     eATK = round(math.log(random.randint(4, 10)))
@@ -137,93 +157,105 @@ def RandName(char_min, char_max):
 def wait(s):
     time.sleep(s)
 
+def GiveItems():
+    global content, coins, bombs, keys, structure_name
+    randmath = 0
+    content = random.randint(1, 33)  # kys
+    if content in [1, 2, 3]:
+        item_list_pot[0] += 1
+        print("You've gained a tier 1 HP potion")
+    elif content in [4, 5, 6]:
+        item_list_pot[1] += 1
+        print("You've gained a tier 1 RESISTANCE potion")
+    elif content in [7, 8, 9]:
+        item_list_pot[2] += 1
+        print("You've gained a tier 1 ATTACK potion")
+    elif content in [10, 11, 12]:
+        item_list_pot[3] += 1
+        print("You've gained a tier 1 SPEED potion")
+    elif content in [13, 14, 15]:
+        item_list_pot[4] += 1
+        print("You've gained a tier 1 LUCK potion")
+    elif content in [16, 17]:
+        item_list_pot[5] += 1
+        print("You've gained a tier 2 HP potion")
+    elif content in [18, 19]:
+        item_list_pot[6] += 1
+        print("You've gained a tier 2 RESISTANCE potion")
+    elif content in [20, 21]:
+        item_list_pot[7] += 1
+        print("You've gained a tier 2 ATTACK potion")
+    elif content in [22, 23]:
+        item_list_pot[8] += 1
+        print("You've gained a tier 2 SPEED potion")
+    elif content in [24, 25]:
+        item_list_pot[9] += 1
+        print("You've gained a tier 2 LUCK potion")
+    elif content == 26:
+        item_list_pot[10] += 1
+        print("You've gained a tier 3 HP potion")
+    elif content == 27:
+        item_list_pot[11] += 1
+        print("You've gained a tier 3 RESISTANCE potion")
+    elif content == 28:
+        item_list_pot[12] += 1
+        print("You've gained a tier 3 ATTACK potion")
+    elif content == 29:
+        item_list_pot[13] += 1
+        print("You've gained a tier 3 SPEED potion")
+    elif content == 30:
+        item_list_pot[14] += 1
+        print("You've gained a tier 3 LUCK potion")
+    elif content == 31:
+        randmath = random.randint(5, 12)
+        coins += randmath
+        print("You found", randmath, "Coins! Total coins:", coins)
+    elif content == 32:
+        keys += 2
+        print("You got 2 keys!, now you have:", keys, "keys")
+    elif content == 33:
+        bombs += 1
+        print("You got a bomb!, now you have:", bombs, "bombs")
+
 def Chest():
     global content, coins, bombs, keys, structure_name
     randmath = 0
-    if keys >= 1 and not structure_name == "Village":
+    print("You found a chest!")
+    wait(1)
+    print("You look inside...")
+    wait(2)
+    if keys >= 1 and structure_name != "Village":
         keys -= 1
-        random.randint(1, 33)
-        if content == 1 or 2 or 3:
-            item_list_pot[0] += 1
-            print("You've gained a tier 1 HP potion")
-        elif content == 4 or 5 or 6:
-            item_list_pot[1] += 1
-            print("You've gained a tier 1 RESISTANCE potion")
-        elif content == 7 or 8 or 9:
-            item_list_pot[2] += 1
-            print("You've gained a tier 1 ATTACK potion")
-        elif content == 10 or 11 or 12:
-            item_list_pot[3] += 1
-            print("You've gained a tier 1 SPEED potion")
-        elif content == 13 or 14 or 15:
-            item_list_pot[4] += 1
-            print("You've gained a tier 1 LUCK potion")
-        elif content == 16 or 17:
-            item_list_pot[5] += 1
-            print("You've gained a tier 2 HP potion")
-        elif content == 18 or 19:
-            item_list_pot[6] += 1
-            print("You've gained a tier 2 RESISTANCE potion")
-        elif content == 20 or 21:
-            item_list_pot[7] += 1
-            print("You've gained a tier 2 ATTACK potion")
-        elif content == 22 or 23:
-            item_list_pot[8] += 1
-            print("You've gained a tier 2 SPEED potion")
-        elif content == 24 or 25:
-            item_list_pot[9] += 1
-            print("You've gained a tier 2 LUCK potion")
-        elif content == 26:
-            item_list_pot[10] += 1
-            print("You've gained a tier 3 HP potion")
-        elif content == 27:
-            item_list_pot[11] += 1
-            print("You've gained a tier 3 RESISTANCE potion")
-        elif content == 28:
-            item_list_pot[12] += 1
-            print("You've gained a tier 3 ATTACK potion")
-        elif content == 29:
-            item_list_pot[13] += 1
-            print("You've gained a tier 3 SPEED potion")
-        elif content == 30:
-            item_list_pot[14] += 1
-            print("You've gained a tier 3 LUCK potion")
-        elif content == 31:
-            randmath = random.randint(5,12)
-            coins += randmath
-            print("You found", randmath, "Coins! Total coins: ", coins)
-        elif content == 32:
-            keys += 2
-            print("You got 2 keys!, now you have: ", keys, "keys")
-        elif content == 33:
-            bombs += 1
-            print("You got a bomb!, now you have: ", bombs, "bombs")
+        GiveItems()
     elif structure_name == "Village":
-        randmath = random.randint(1,5)
+        randmath = random.randint(1, 5)
         if randmath == 1:
             coins += 1
-            print("you just got a coin, now you have: ", coins, "coins!")
+            print("You just got a coin, now you have:", coins, "coins!")
         elif randmath == 2:
             coins += 3
-            print("you just got 3 coins!, now you have: ", coins, "coins!")
+            print("You just got 3 coins!, now you have:", coins, "coins!")
         elif randmath == 3:
             coins += 5
-            print("you just got 5 coins!!, now you have: ", coins, "coins!")
+            print("You just got 5 coins!!, now you have:", coins, "coins!")
         elif randmath == 4:
             coins += 7
-            print("you just got 7 coins!!!, now you have: ", coins, "coins!")
+            print("You just got 7 coins!!!, now you have:", coins, "coins!")
         elif randmath == 5:
             keys += 1
-            print("You got a key!, now you have: ", keys, "keys")
+            print("You got a key!, now you have:", keys, "keys")
     elif keys == 0:
         print("You can't open this chest because you don't have a key to open it")
 
 def GetStructureInfo():
-    global structure_name, has_enemies, has_chest
+    global structure_name, has_enemies, has_chest, has_item
     has_enemies = random.randint(0, 1)
     encounter = random.randint(0, 1)
-    has_chest = random.randint(0, 1)
-    randomstructure = random.randint(1, 7)
+    if structure_name != "Abandoned Village":
+        has_chest = random.randint(0, 1)
+    else:
+        has_chest = random.randint(0, 5)
+    randomstructure = random.randint(1, 8)
     if randomstructure == 1:
         structure_name = "Village"
     elif randomstructure == 2:
@@ -236,11 +268,13 @@ def GetStructureInfo():
         structure_name = "Desert"
     elif randomstructure == 6:
         structure_name = "Swamp"
-    else:
+    elif randomstructure == 7:
         structure_name = "Dungeon"
+    elif randomstructure == 8:
+        structure_name = "Abandoned Village"
 
 
-def Structure(s_name, s_chest, s_enemies):
+def Structure(s_name, s_chest, s_enemies, s_item):
     # when called, the code must specify the name, if it has chests and if it has enemies.
     # here we make it check so if the name is X then it will do this and that
 
@@ -249,6 +283,7 @@ def Structure(s_name, s_chest, s_enemies):
     if s_name == "Village":
         print("You are in a village")
         wait(1)
+
         if s_chest == 1:
             print("This", strname, "has a chest!")
             wait(1)
@@ -257,6 +292,21 @@ def Structure(s_name, s_chest, s_enemies):
         else:
             print("This", strname, "doesn't have a chest.")
             wait(1)
+
+        has_shop = random.randint(0,1)
+        if has_shop == 0:
+            print("This Village doesn't have a shop")
+        elif has_shop == 1:
+            print("This Village has a shop!")
+            shop = random.randint(1,3)
+            if has_shop == 1:
+                wait(1)
+                if shop == 1:
+                    print(name, "has decided to go to a potion shop")
+                elif shop == 2:
+                    print(name, "has decided to go to a armor shop")
+                elif shop == 3:
+                    print(name, "has decided to go to a general shop")
     elif s_name == "Forest":
         print("You are in a forest")
         wait(1)
@@ -280,7 +330,7 @@ def Structure(s_name, s_chest, s_enemies):
     elif s_name == "Swamp":
         print("You are in a swamp")
         wait(1)
-    else:
+    elif s_name == "Dungeon":
         print("You are in a dungeon ")
         wait(1)
         if s_chest == 1:
@@ -291,23 +341,30 @@ def Structure(s_name, s_chest, s_enemies):
         else:
             print("This", strname, "doesn't have a chest.")
             wait(1)
+    elif s_name == "Abandoned Village":
+        print("You are in an abandoned village")
+        wait(1)
+        if s_chest == 5:
+            print("This", strname, "has a chest!")
+            wait(1)
+            Chest()
+            wait(1)
+        else:
+            print("This", strname, "doesn't have a chest.")
+            wait(1)
+    hitem = random.randint(0,2)
+    if hitem == 2:
+        print("You look around, searching for anything you can use...")
+        if s_item != 5:
+            wait(1.5)
+            print("You did not find any items")
+        else:
+            print("You see something in the ground...")
+            wait(1.5)
+            GiveItems()
+
     if has_enemies == 1 and encounter == 1:
         battle()
-    has_shop = random.randint(0,1)
-    if structure_name == "Village":
-        if has_shop == 0:
-            print("This village doesn't have a shop")
-        elif has_shop == 1:
-            print("This village has a shop!")
-        shop = random.randint(1,3)
-        if has_shop == 1:
-            wait(1)
-            if shop == 1:
-                print(name, "has decided to go to a potion shop")
-            elif shop == 2:
-                print(name, "has decided to go to a armor shop")
-            elif shop == 3:
-                print(name, "has decided to go to a general shop")
 # here we go
 
 def attack():
@@ -338,40 +395,10 @@ def StopDefend():
     elif turn == 0:
         eRST //= 2
 
-def use_item():
-
-    global HP, RST, ATK, SPD, LCK
-
-    
 
 def item():
-    
-    global HP, RST, ATK, SPD, LCK
-    
-    if HP >= 50:
-	lHP = random.randint(1, 6)
-	if lHP == 1 or 2 or 3:
-	# more probs to use a t1 HP pot
-	elif lHP == 4 or 5:
-	# more probs to use a t2 HP pot
-	elif lHP == 6:
-	# more probs to use a t3 HP pot
-
-    # make an if statement that if the enemy defended you get more probs to a RST pot
-	
-    rndlist = random.randint(1, 3)
-    
-    if rndlist == 1:
-        rnditem = random.choice(item_list_pot)
-    elif rndlist == 2:
-        rnditem = random.choice(item_list_)
-    elif rndlist == 3:
-        rnditem = random.choice(item_list_)
-
-    if rnditem == 0:
-		# restart
-    elif rnditem <= 1:
-        use_item()
+    # we need a list with all items
+    return
 
 
 def BattleEnd():
@@ -457,6 +484,6 @@ while game:
     if HP <= 0:
         break
     GetStructureInfo()
-    Structure(structure_name, has_chest, has_enemies)
+    Structure(structure_name, has_chest, has_enemies, has_item)
     wait(1)
     # game = False (endgame (haha avengers reference))
