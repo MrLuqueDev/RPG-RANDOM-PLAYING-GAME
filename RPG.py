@@ -96,11 +96,8 @@ item_list = [item_list_pot, ]
 # FUNCTIONS :3
 
 def defstats():
-    global HP
-    global RST
-    global ATK
-    global SPD
-    global LCK
+    
+    global HP, RST, ATK, SPD, LCK
 
     HP = random.randint(75, 150)
     RST = random.randint(1, 5)
@@ -109,7 +106,9 @@ def defstats():
     LCK = random.randint(-10, 10)
 
 def FunNames():
+    
     global name, game, HP, RST, LCK, ATK, SPD
+    
     if name == "hugo":
         wait(1)
         print("hugo used: Suicide!")
@@ -136,12 +135,9 @@ def FunNames():
     
 
 def defenemystats():
-    global eHP
-    global eRST
-    global eATK
-    global eSPD
-    global elevel
 
+    global eHP, eRST, eATK, eSPD
+    
     eHP = random.randint(50, 90) + level
     eRST = random.randint(1, 5)
     eATK = round(math.log(random.randint(4, 10)))
@@ -158,7 +154,9 @@ def wait(s):
     time.sleep(s)
 
 def GiveItems():
+    
     global content, coins, bombs, keys, structure_name
+    
     randmath = 0
     content = random.randint(1, 33)  # kys
     if content in [1, 2, 3]:
@@ -218,7 +216,9 @@ def GiveItems():
         print("You got a bomb!, now you have:", bombs, "bombs")
 
 def Chest():
+    
     global content, coins, bombs, keys, structure_name
+    
     randmath = 0
     print("You found a chest!")
     wait(1)
@@ -248,7 +248,9 @@ def Chest():
         print("You can't open this chest because you don't have a key to open it")
 
 def GetStructureInfo():
+    
     global structure_name, has_enemies, has_chest, has_item
+    
     has_enemies = random.randint(0, 1)
     encounter = random.randint(0, 1)
     if structure_name != "Abandoned Village":
@@ -379,6 +381,7 @@ def attack():
 
 
 def defend():
+    
     global turn, RST, eRST
 
     if turn == 1:
@@ -388,6 +391,7 @@ def defend():
 
 
 def StopDefend():
+    
     global turn, RST, eRST
 
     if turn == 1:
@@ -402,12 +406,14 @@ def item():
 
 
 def BattleEnd():
+    
     global battling
 
     battling = False
 
 
 def battle():
+    
     global battling, flee, eflee
 
     while battling:
