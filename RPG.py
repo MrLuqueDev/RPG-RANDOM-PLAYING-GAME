@@ -400,9 +400,85 @@ def StopDefend():
         eRST //= 2
 
 
-def item():
-    # we need a list with all items
-    return
+def use_items:
+	
+    global HP, RST, ATK, SPD, LCK
+    # Maybe a boss fight?
+    # day night circle, and 50/50 to stay in the same place
+
+    if max_HP/2 >= HP:
+
+	more_prob_hp_pot = random.randint(1,4)
+
+	if more_prob_hp_pot == 1 or more_prob_hp_pot == 2 or more_prob_hp_pot == 3:
+	    # more probs to get hp pots (t1, t2 & t3)
+ 	elif more_prob_hp_pot == 4:
+	    # go back to the function
+
+    rnd_use_items = random.randint(1,15)
+
+    if rnd_use_items == 1 and item_list_pot[0] >= 1:
+	item_list_pot[0] -= 1
+	HP += 20
+	print(name, " used a tier 1 HP potion")
+    elif rnd_use_items == 2 and item_list_pot[1] >= 1:
+	item_list_pot[1] -= 1
+	RST += 5 
+	print(name, " used a tier 1 RST potion")
+    elif rnd_use_items == 3 and item_list_pot[2] >= 1:
+	item_list_pot[2] -= 1
+	ATK += 5
+	print(name, " used a tier 1 ATK potion")
+    elif rnd_use_items == 4 and item_list_pot[3] >= 1:
+	item_list_pot[3] -= 1
+	SPD += 5
+	print(name, " used a tier 1 SPD potion")
+    elif rnd_use_items == 5 and item_list_pot[4] >= 1:
+	item_list_pot[4] -= 1
+	LCK += 5
+	print(name, " used a tier 1 LCK potion")
+    elif rnd_use_items == 6 and item_list_pot[5] >= 1:
+	item_list_pot[5] -= 1
+	HP += max_HP/2 
+	print(name, " used a tier 2 HP potion")
+    elif rnd_use_items == 7 and item_list_pot[6] >= 1:
+	item_list_pot[6] -= 1
+	RST += 10
+	print(name, " used a tier 2 RST potion")
+    elif rnd_use_items == 8 and item_list_pot[7] >= 1:
+	item_list_pot[7] -= 1
+	ATK += 10
+	print(name, " used a tier 2 ATK potion")
+    elif rnd_use_items == 9 and item_list_pot[8] >= 1:
+	item_list_pot[8] -= 1
+	SPD += 10
+	print(name, " used a tier 2 SPD potion")
+    elif rnd_use_items == 10 and item_list_pot[9] >= 1:
+	item_list_pot[9] -= 1
+	LCK += 10
+	print(name, " used a tier 2 LCK potion")
+    elif rnd_use_items == 11 and item_list_pot[10] >= 1:
+	item_list_pot[10] -= 1
+	HP = max_HP 
+	print(name, " used a tier 3 HP potion")
+    elif rnd_use_items == 12 and item_list_pot[11] >= 1:
+	item_list_pot[11] -= 1
+	RST += 20
+	print(name, " used a tier 3 HP potion")
+    elif rnd_use_items == 13 and item_list_pot[12] >= 1:
+	item_list_pot[12] -= 1
+	ATK += 20
+	print(name, " used a tier 3 ATK potion")
+    elif rnd_use_items == 14 and item_list_pot[13] >= 1:
+	item_list_pot[13] -= 1
+	SPD += 20
+	print(name, " used a tier 3 SPD potion")
+    elif rnd_use_items == 15 and item_list_pot[14] >= 1:
+	item_list_pot[14] -= 1
+	LCK += 20
+	print(name, " used a tier 3 LCK potion")
+    else:
+	print("bro doesnt have items")
 
 
 def BattleEnd():
