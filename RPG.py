@@ -57,6 +57,7 @@ ATK = 0
 SPD = 0
 LCK = 0
 MP = 0
+ACC = 0
 levelHP = 0
 levelRST = 0
 levelATK = 0
@@ -111,16 +112,19 @@ item_list = [item_list_pot, ]
 
 def defstats():
     
-    global HP, RST, ATK, SPD, LCK, level, Class
+    global HP, RST, ATK, SPD, LCK, MP, level, Class
 
     rndClass = random.randint(1, 3)
 
     if rndClass == 1:
         Class = "Warrior"
-    elif rndClass ==2:
+    elif rndClass == 2:
         Class = "Archer"
-    elif rndClass ==3:
+    elif rndClass == 3:
         Class = "Wizard" # SHADOW WIZARD MONEY GANG
+
+    if Class == "Wizard": # WE LOVE CASTING SPELLS
+        MP = round(math.log(random.randint(5, 15)))
 
     level = 1
     HP = random.randint(75, 150)
@@ -131,7 +135,20 @@ def defstats():
 
 
 def levelup():
-    return
+
+    global HP, RST, ATK, SPD, MP, level, Class, XP, XP_req
+
+    level += 1
+
+    if Class == "Wizard":
+        MP += random.randint(2,4)
+
+    HP += random.randint(5,15)
+    RST += random.randint(1,2)
+    ATK += random.randint(1,2)
+    SPD += 1
+
+    XP_req += XP_req * 0.5
 
 
 def FunNames():
