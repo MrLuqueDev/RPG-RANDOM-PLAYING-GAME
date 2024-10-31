@@ -448,13 +448,13 @@ def attack():
         elif Class == "Wizard":
             rnd_spell = random.randint(1, 100)
             if rnd_spell <= 33:
-                return # fireball
+                print(name, "has used fireball!")
             elif rnd_spell >= 34 and rnd_spell <= 66:
-                return # healing spell
+                print(name, "has used healing!")
             elif rnd_spell >= 67 and rnd_spell <= 99:
-                return # thunderbolt
+                print(name, "has used thunderbolt!")
             elif rnd_spell == 100:
-                return # SHADOW WIZARD MONEY GANG
+                print("SHADOW WIZARD MONEY GANG")
         return
 
 
