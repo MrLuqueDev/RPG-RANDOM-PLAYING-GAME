@@ -58,6 +58,8 @@ SPD = 0
 LCK = 0
 MP = 0
 ACC = 0
+critPROB = 0
+critDMG = 0
 levelHP = 0
 levelRST = 0
 levelATK = 0
@@ -78,6 +80,10 @@ elevelRST = 0
 elevelATK = 0
 elevelSPD = 0
 eflee = 0
+
+# Wizard spells
+
+spells = ["Fireball", "Healing spell", "Thunderbolt", "SHADOW WIZARD MONEY GANG"]
 
 # item Values
 
@@ -132,6 +138,8 @@ def defstats():
     ATK = round(math.log(random.randint(5, 15)))
     SPD = 10
     LCK = random.randint(-10, 10)
+    critPROB = 5
+    critDMG = 50
 
 
 def levelup():
@@ -422,13 +430,32 @@ def Structure(s_name, s_chest, s_enemies, s_item):
 
 def attack():
     # turn 0 is the enemy's turn, 1 is your turn
+    # need to add critical system
 
-    global turn, HP, eHP
+    global turn, HP, eHP, ATK, eATK, RST, eRST, Class, ACC, MP, critPROB, critDMG
 
     if turn == 0:
         HP -= eATK + (RST * 0.5)
     elif turn == 1:
-        eHP -= ATK + (eRST * 0.5)
+        if Class == "Warrior":
+            eHP -= ATK + (eRST * 0.5)
+        elif Class == "Archer":
+            ACC = random.randint(1,5)
+            if ACC in [1, 2, 3, 4]:
+                return
+            elif ACC == 5:
+                print("bro missed")
+        elif Class == "Wizard":
+            rnd_spell = random.randint(1, 100)
+            if rnd_spell <= 33:
+                return # fireball
+            elif rnd_spell >= 34 and rnd_spell <= 66:
+                return # healing spell
+            elif rnd_spell >= 67 and rnd_spell <= 99:
+                return # thunderbolt
+            elif rnd_spell == 100:
+                return # SHADOW WIZARD MONEY GANG
+        return
 
 
 def defend():
@@ -671,5 +698,4 @@ while game:
 #⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠰⣿⡇⠀⠀⠀⠘⣷⠀⠀⠀⠈⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⠀⠀⠀⠀⠀⣿⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 #⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡿⣧⠀⠀⠀⠈⢻⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡆⠀⠀⠀⠀⢺⣿⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 #⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣹⠁⣿⡄⠀⠀⠀⠘⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡇⠀⠀⠀⢀⢈⣿⣿⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-
 
