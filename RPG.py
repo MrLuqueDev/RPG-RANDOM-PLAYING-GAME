@@ -188,19 +188,34 @@ def FunNames():
         LCK = 10
     
 
-def defenemystats(elevel):
+def defenemystats(elevel, isElite, isBoss):
 
     global eHP, eRST, eATK, eSPD, elevelHP, elevelRST, elevelATK, elevelSPD
     
-    elevelHP = elevel * 10
-    elevelRST = elevel
-    elevelATK = elevel
-    elevelSPD = elevel * 0.5
+    if isBoss == 1:
+        return
+    # make the rnd name
+    # more stats
+    elif isElite == 1:
+        elevelHP = elevel * 25
+        elevelRST = elevel * 3
+        elevelATK = elevel * 3
+        elevelSPD = elevel * 1
 
-    eHP = random.randint(50, 90) + elevelHP
-    eRST = random.randint(1, 5) + elevelRST
-    eATK = round(math.log(random.randint(4, 10))) + elevelATK
-    eSPD = 2 + elevelSPD
+        eHP = random.randint(100, 175) + elevelHP
+        eRST = random.randint(2, 8) + elevelRST
+        eATK = round(math.log(random.randint(8, 20))) + elevelATK
+        eSPD = 3 + elevelSPD
+    elif isBoss == 0 and isElite == 0:
+        elevelHP = elevel * 10
+        elevelRST = elevel
+        elevelATK = elevel
+        elevelSPD = elevel * 0.5
+
+        eHP = random.randint(50, 90) + elevelHP
+        eRST = random.randint(1, 5) + elevelRST
+        eATK = round(math.log(random.randint(4, 10))) + elevelATK
+        eSPD = 2 + elevelSPD
 
 
 def RandName(char_min, char_max):
