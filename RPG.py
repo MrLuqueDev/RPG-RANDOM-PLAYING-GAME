@@ -32,6 +32,7 @@ encounter = 0
 defending = 0
 edefending = 0
 content = None
+tehas_questobject = False
 
 # structure variables
 
@@ -40,6 +41,10 @@ has_chest = 0
 has_enemies = 0
 has_shop = 0
 has_item = random.randint(0,5)
+npcname = ""
+quest = False
+hasquestobject = False
+hasnpc = 0  
 
 # player variables
 
@@ -51,6 +56,7 @@ level = 1
 Class = "" 
 XP = 0
 XP_req = 0
+XP_res = 0
 HP = 0
 RST = 0
 ATK = 0
@@ -70,6 +76,7 @@ flee = 0
 
 # enemy variables
 
+eName = ""
 eHP = 0
 eRST = 0
 eATK = 0
@@ -80,6 +87,8 @@ elevelRST = 0
 elevelATK = 0
 elevelSPD = 0
 eflee = 0
+isElite = 0
+isBoss = 0
 
 # Wizard spells
 
@@ -144,7 +153,7 @@ def defstats():
 
 def levelup():
 
-    global HP, RST, ATK, SPD, MP, level, Class, XP, XP_req
+    global HP, RST, ATK, SPD, MP, level, Class, XP, XP_req, XP_res
 
     level += 1
 
@@ -156,7 +165,16 @@ def levelup():
     ATK += random.randint(1,2)
     SPD += 1
 
+    XP -= XP_req 
+
     XP_req += XP_req * 0.5
+
+    XP_res = XP - XP_req
+
+    if XP_res < 0:
+        XP_res = 0
+    elif XP_res >= 0:
+        XP += XP_res
 
 
 def FunNames():
@@ -192,6 +210,11 @@ def defenemystats(elevel, isElite, isBoss):
 
     global eHP, eRST, eATK, eSPD, elevelHP, elevelRST, elevelATK, elevelSPD
     
+    rndelite = random.randint(1,20)
+
+    if rndelite == 1:
+        isElite = 1
+
     if isBoss == 1:
         return
     # make the rnd name
@@ -216,6 +239,18 @@ def defenemystats(elevel, isElite, isBoss):
         eRST = random.randint(1, 5) + elevelRST
         eATK = round(math.log(random.randint(4, 10))) + elevelATK
         eSPD = 2 + elevelSPD
+
+
+def enemydeath():
+    
+    global elevel, isElite, isBoss, XP, XP_req, coins, keys, bombs
+
+    if isBoss == 1:
+        return
+    elif isElite == 1:
+        return
+    elif isBoss == 0 and isElite == 0:
+        return
 
 
 def RandName(char_min, char_max):
@@ -322,9 +357,7 @@ def Chest():
         print("You can't open this chest because you don't have a key to open it")
 
 def GetStructureInfo():
-    
-    global structure_name, has_enemies, has_chest, has_item
-    
+    global structure_name, has_enemies, has_chest, has_item, tehas_questobject
     has_enemies = random.randint(0, 1)
     encounter = random.randint(0, 1)
     if structure_name != "Abandoned Village":
@@ -332,6 +365,8 @@ def GetStructureInfo():
     else:
         has_chest = random.randint(0, 5)
     randomstructure = random.randint(1, 8)
+    tehas_questobject = random.randint(1,4)
+    hasnpc = random.randint(1,5)
     if randomstructure == 1:
         structure_name = "Village"
     elif randomstructure == 2:
@@ -349,46 +384,53 @@ def GetStructureInfo():
     elif randomstructure == 8:
         structure_name = "Abandoned Village"
 
-
-def Structure(s_name, s_chest, s_enemies, s_item):
+def Structure(s_name, s_chest, s_enemies, s_item, s_questobject, s_npc, has_questobject):
     # when called, the code must specify the name, if it has chests and if it has enemies.
     # here we make it check so if the name is X then it will do this and that
 
+    
     strname = str(s_name)
+    global quest, hasquestobject
 
     if s_name == "Village":
         print("You are in a village")
         wait(1)
 
         if s_chest == 1:
-            print("This", strname, "has a chest!")
             wait(1)
             Chest()
             wait(1)  
         else:
             print("This", strname, "doesn't have a chest.")
             wait(1)
+        
+        # shop def
 
         has_shop = random.randint(0,1)
+
         if has_shop == 0:
             print("This Village doesn't have a shop")
         elif has_shop == 1:
             print("This Village has a shop!")
             shop = random.randint(1,3)
+
             if has_shop == 1:
                 wait(1)
+
                 if shop == 1:
                     print(name, "has decided to go to a potion shop")
                 elif shop == 2:
                     print(name, "has decided to go to a armor shop")
                 elif shop == 3:
                     print(name, "has decided to go to a general shop")
+
     elif s_name == "Forest":
         print("You are in a forest")
         wait(1)
     elif s_name == "Temple":
         print("You are in a temple")
         wait(1)
+
         if s_chest == 1:
             print("This", strname, "has a chest!")
             wait(1)
@@ -409,6 +451,7 @@ def Structure(s_name, s_chest, s_enemies, s_item):
     elif s_name == "Dungeon":
         print("You are in a dungeon ")
         wait(1)
+
         if s_chest == 1:
             print("This", strname, "has a chest!")
             wait(1)
@@ -420,6 +463,7 @@ def Structure(s_name, s_chest, s_enemies, s_item):
     elif s_name == "Abandoned Village":
         print("You are in an abandoned village")
         wait(1)
+
         if s_chest == 5:
             print("This", strname, "has a chest!")
             wait(1)
@@ -429,6 +473,7 @@ def Structure(s_name, s_chest, s_enemies, s_item):
             print("This", strname, "doesn't have a chest.")
             wait(1)
     hitem = random.randint(0,2)
+
     if hitem == 2:
         print("You look around, searching for anything you can use...")
         if s_item != 5:
@@ -441,6 +486,33 @@ def Structure(s_name, s_chest, s_enemies, s_item):
 
     if has_enemies == 1 and encounter == 1:
         battle()
+    
+    if strname == "Village":
+        if not quest:
+            if s_npc == 1:
+                npcname = RandName(3, 3)
+                print("Hello, my name is", npcname, "i have lost an important object, will you find it for me?")
+                wait(1)
+                print("You will? thank you so much!")
+                quest = True
+
+    if strname == "Village":
+        if quest:
+            if hasquestobject == True:
+                print("Thanks for encountering my object, take this as a reward!")
+                rancoins = random.randint(5,12)
+                coins += rancoins
+                print("You got", rancoins, "coins! now you have", coins, "coins!" )
+                hasquestobject = False
+
+    if strname != "Village":
+        if quest == True:
+            if s_questobject == 1:
+                print("You encountered the object", npcname, "wanted")
+                wait(1)
+                print("object was added to your inventory")
+                hasquestobject == True
+    
 # here we go
 
 def attack():
@@ -457,9 +529,9 @@ def attack():
         elif Class == "Archer":
             ACC = random.randint(1,5)
             if ACC in [1, 2, 3, 4]:
-                return
+                print("your arrow did")
             elif ACC == 5:
-                print("bro missed")
+                print("critical hit !!")
         elif Class == "Wizard":
             rnd_spell = random.randint(1, 100)
             if rnd_spell <= 33:
@@ -664,8 +736,10 @@ wait(2)
 while game:
     if HP <= 0:
         break
+    if XP_req <= XP:
+        levelup()
     GetStructureInfo()
-    Structure(structure_name, has_chest, has_enemies, has_item)
+    Structure(structure_name, has_chest, has_enemies, has_item, hasquestobject, hasnpc, tehas_questobject)0
     wait(1)
     # game = False (endgame (haha avengers reference))
 
@@ -713,4 +787,3 @@ while game:
 #⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠰⣿⡇⠀⠀⠀⠘⣷⠀⠀⠀⠈⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⠀⠀⠀⠀⠀⣿⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 #⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡿⣧⠀⠀⠀⠈⢻⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡆⠀⠀⠀⠀⢺⣿⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 #⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣹⠁⣿⡄⠀⠀⠀⠘⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡇⠀⠀⠀⢀⢈⣿⣿⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-
