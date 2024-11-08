@@ -739,7 +739,7 @@ while game:
     if XP_req <= XP:
         levelup()
     GetStructureInfo()
-    Structure(structure_name, has_chest, has_enemies, has_item, hasquestobject, hasnpc, tehas_questobject)0
+    Structure(structure_name, has_chest, has_enemies, has_item, hasquestobject, hasnpc, tehas_questobject)
     wait(1)
     # game = False (endgame (haha avengers reference))
 
