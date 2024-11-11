@@ -379,6 +379,21 @@ def Chest():
     elif keys == 0:
         print("You can't open this chest because you don't have a key to open it")
 
+
+def GetNormalEvent():
+    
+    global event_name
+
+    randomevent = random.randint(1,3)
+
+    if randomevent == 1:
+        event_name = "bro falls"
+    elif randomevent == 2:
+        event_name = "you got hit by a stone"
+    elif randomevent == 3:
+        event_name = "alcoholics"
+
+
 def GetStructureInfo():
     global structure_name, has_enemies, has_chest, has_item, tehas_questobject
     has_enemies = random.randint(0, 1)
