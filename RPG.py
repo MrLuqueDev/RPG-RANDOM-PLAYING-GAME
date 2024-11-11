@@ -127,7 +127,7 @@ item_list = [item_list_pot, ]
 
 def defstats():
     
-    global HP, RST, ATK, SPD, LCK, MP, level, Class
+    global HP, RST, ATK, SPD, LCK, MP, level, Class, critPROB, critDMG
 
     rndClass = random.randint(1, 3)
 
@@ -148,7 +148,24 @@ def defstats():
     SPD = 10
     LCK = random.randint(-10, 10)
     critPROB = 5
-    critDMG = 50
+    critDMG = 150 # min is 100 which is base dmg
+
+
+def criticalhit():
+    
+    global critPROB, critDMG, ATK
+
+    critprobrnd = random.randint(1, 100)
+
+    if critprobrnd <= critPROB:
+        critprob1 = 1
+    else:
+        critprob1 = 0
+
+    if critprob1 == 1:
+        ATK *= (critDMG/100)
+    elif critprob1 == 0:
+        return
 
 
 def levelup():
