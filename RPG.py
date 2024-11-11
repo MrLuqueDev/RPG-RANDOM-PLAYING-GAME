@@ -221,6 +221,12 @@ def FunNames():
         ATK = 2
         SPD = 10
         LCK = 10
+    elif name == "jester":
+        HP = 50
+        RST = 1
+        ATK = 5
+        SPD = 5
+        LCK = 10
     
 
 def defenemystats(elevel, isElite, isBoss):
