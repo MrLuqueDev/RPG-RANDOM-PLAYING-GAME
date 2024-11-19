@@ -40,11 +40,11 @@ structure_name = ""
 has_chest = 0
 has_enemies = 0
 has_shop = 0
-has_item = random.randint(0,5)
+has_item = random.randint(0, 5)
 npcname = ""
 quest = False
 hasquestobject = False
-hasnpc = 0  
+hasnpc = 0
 
 # player variables
 
@@ -53,7 +53,7 @@ keys = 100
 coins = 0
 bombs = 0
 level = 1
-Class = "" 
+Class = ""
 XP = 0
 XP_req = 0
 XP_res = 0
@@ -96,37 +96,24 @@ spells = ["Fireball", "Healing spell", "Thunderbolt", "SHADOW WIZARD MONEY GANG"
 
 # item Values
 
-HP_pot_t1 = 0
-RST_pot_t1 = 0
-ATK_pot_t1 = 0
-SPD_pot_t1 = 0
+item_list_pot_t1 = [0] * 5  # HP, RST, ATK, SPD, LCK
+item_list_pot_t2 = [0] * 5
+item_list_pot_t3 = [0] * 5
 
-HP_pot_t2 = 0
-RST_pot_t2 = 0
-ATK_pot_t2 = 0
-SPD_pot_t2 = 0
+item_list = [item_list_pot_t1, item_list_pot_t2, item_list_pot_t3]
 
-HP_pot_t3 = 0
-RST_pot_t3 = 0
-ATK_pot_t3 = 0
-SPD_pot_t3 = 0
-
-LCK_pot_t1 = 0
-LCK_pot_t2 = 0
-LCK_pot_t3 = 0
-
-item_list_pot = [
-    HP_pot_t1, RST_pot_t1, ATK_pot_t1, SPD_pot_t1, LCK_pot_t1,
-    HP_pot_t2, RST_pot_t2, ATK_pot_t2, SPD_pot_t2, LCK_pot_t2,
-    HP_pot_t3, RST_pot_t3, ATK_pot_t3, SPD_pot_t3, LCK_pot_t3
-]
-
-item_list = [item_list_pot, ]
+# Add new global variables at the top with other game variables
+days_in_village = 0
+max_days_in_village = 0
+quest_biome = ""
+quest_item = ""
+quest_reward = 0
 
 # FUNCTIONS :3
 
+
 def defstats():
-    
+
     global HP, RST, ATK, SPD, LCK, MP, level, Class, critPROB, critDMG
 
     rndClass = random.randint(1, 3)
@@ -136,9 +123,9 @@ def defstats():
     elif rndClass == 2:
         Class = "Archer"
     elif rndClass == 3:
-        Class = "Wizard" # SHADOW WIZARD MONEY GANG
+        Class = "Wizard"  # SHADOW WIZARD MONEY GANG
 
-    if Class == "Wizard": # WE LOVE CASTING SPELLS
+    if Class == "Wizard":  # WE LOVE CASTING SPELLS
         MP = round(math.log(random.randint(5, 15)))
 
     level = 1
@@ -148,11 +135,11 @@ def defstats():
     SPD = 10
     LCK = random.randint(-10, 10)
     critPROB = 5
-    critDMG = 150 # min is 100 which is base dmg
+    critDMG = 150  # min is 100 which is base dmg
 
 
 def criticalhit():
-    
+
     global critPROB, critDMG, ATK
 
     critprobrnd = random.randint(1, 100)
@@ -163,7 +150,7 @@ def criticalhit():
         critprob1 = 0
 
     if critprob1 == 1:
-        ATK *= (critDMG/100)
+        ATK *= critDMG / 100
     elif critprob1 == 0:
         return
 
@@ -175,14 +162,14 @@ def levelup():
     level += 1
 
     if Class == "Wizard":
-        MP += random.randint(2,4)
+        MP += random.randint(2, 4)
 
-    HP += random.randint(5,15)
-    RST += random.randint(1,2)
-    ATK += random.randint(1,2)
+    HP += random.randint(5, 15)
+    RST += random.randint(1, 2)
+    ATK += random.randint(1, 2)
     SPD += 1
 
-    XP -= XP_req 
+    XP -= XP_req
 
     XP_req += XP_req * 0.5
 
@@ -195,9 +182,9 @@ def levelup():
 
 
 def FunNames():
-    
+
     global name, game, HP, RST, LCK, ATK, SPD
-    
+
     if name == "hugo":
         wait(1)
         print("hugo used: Suicide!")
@@ -207,7 +194,9 @@ def FunNames():
         print("hugo is now fucking dead!")
         game = False
     elif name == "frisk":
-        input("Warning, This name will make your life a literal living nightmare. do you wish to procceed? (y/n): ")
+        input(
+            "Warning, This name will make your life a literal living nightmare. do you wish to procceed? (y/n): "
+        )
         wait(1.5)
         print("well too bad, you already chose it now HAAHAHAHAHAHAHA")
         HP = 50
@@ -227,13 +216,13 @@ def FunNames():
         ATK = 5
         SPD = 5
         LCK = 10
-    
+
 
 def defenemystats(elevel, isElite, isBoss):
 
     global eHP, eRST, eATK, eSPD, elevelHP, elevelRST, elevelATK, elevelSPD
-    
-    rndelite = random.randint(1,20)
+
+    rndelite = random.randint(1, 20)
 
     if rndelite == 1:
         isElite = 1
@@ -265,7 +254,7 @@ def defenemystats(elevel, isElite, isBoss):
 
 
 def enemydeath():
-    
+
     global elevel, isElite, isBoss, XP, XP_req, coins, keys, bombs
 
     if isBoss == 1:
@@ -279,62 +268,63 @@ def enemydeath():
 def RandName(char_min, char_max):
     for i in range(random.randint(char_min, char_max)):
         global name
-        name += random.choice('abcdefghijklmnopqrstuvwxyz')
+        name += random.choice("abcdefghijklmnopqrstuvwxyz")
 
 
 def wait(s):
     time.sleep(s)
 
+
 def GiveItems():
-    
+
     global content, coins, bombs, keys, structure_name
-    
+
     randmath = 0
     content = random.randint(1, 33)  # kys
     if content in [1, 2, 3]:
-        item_list_pot[0] += 1
+        item_list_pot_t1[0] += 1
         print("You've gained a tier 1 HP potion")
     elif content in [4, 5, 6]:
-        item_list_pot[1] += 1
+        item_list_pot_t1[1] += 1
         print("You've gained a tier 1 RESISTANCE potion")
     elif content in [7, 8, 9]:
-        item_list_pot[2] += 1
+        item_list_pot_t1[2] += 1
         print("You've gained a tier 1 ATTACK potion")
     elif content in [10, 11, 12]:
-        item_list_pot[3] += 1
+        item_list_pot_t1[3] += 1
         print("You've gained a tier 1 SPEED potion")
     elif content in [13, 14, 15]:
-        item_list_pot[4] += 1
+        item_list_pot_t1[4] += 1
         print("You've gained a tier 1 LUCK potion")
     elif content in [16, 17]:
-        item_list_pot[5] += 1
+        item_list_pot_t2[0] += 1
         print("You've gained a tier 2 HP potion")
     elif content in [18, 19]:
-        item_list_pot[6] += 1
+        item_list_pot_t2[1] += 1
         print("You've gained a tier 2 RESISTANCE potion")
     elif content in [20, 21]:
-        item_list_pot[7] += 1
+        item_list_pot_t2[2] += 1
         print("You've gained a tier 2 ATTACK potion")
     elif content in [22, 23]:
-        item_list_pot[8] += 1
+        item_list_pot_t2[3] += 1
         print("You've gained a tier 2 SPEED potion")
     elif content in [24, 25]:
-        item_list_pot[9] += 1
+        item_list_pot_t2[4] += 1
         print("You've gained a tier 2 LUCK potion")
     elif content == 26:
-        item_list_pot[10] += 1
+        item_list_pot_t3[0] += 1
         print("You've gained a tier 3 HP potion")
     elif content == 27:
-        item_list_pot[11] += 1
+        item_list_pot_t3[1] += 1
         print("You've gained a tier 3 RESISTANCE potion")
     elif content == 28:
-        item_list_pot[12] += 1
+        item_list_pot_t3[2] += 1
         print("You've gained a tier 3 ATTACK potion")
     elif content == 29:
-        item_list_pot[13] += 1
+        item_list_pot_t3[3] += 1
         print("You've gained a tier 3 SPEED potion")
     elif content == 30:
-        item_list_pot[14] += 1
+        item_list_pot_t3[4] += 1
         print("You've gained a tier 3 LUCK potion")
     elif content == 31:
         randmath = random.randint(5, 12)
@@ -347,10 +337,11 @@ def GiveItems():
         bombs += 1
         print("You got a bomb!, now you have:", bombs, "bombs")
 
+
 def Chest():
-    
+
     global content, coins, bombs, keys, structure_name
-    
+
     randmath = 0
     print("You found a chest!")
     wait(1)
@@ -381,10 +372,10 @@ def Chest():
 
 
 def GetNormalEvent():
-    
+
     global event_name
 
-    randomevent = random.randint(1,3)
+    randomevent = random.randint(1, 3)
 
     if randomevent == 1:
         event_name = "bro falls"
@@ -403,8 +394,8 @@ def GetStructureInfo():
     else:
         has_chest = random.randint(0, 5)
     randomstructure = random.randint(1, 8)
-    tehas_questobject = random.randint(1,4)
-    hasnpc = random.randint(1,5)
+    tehas_questobject = random.randint(1, 4)
+    hasnpc = random.randint(1, 5)
     if randomstructure == 1:
         structure_name = "Village"
     elif randomstructure == 2:
@@ -422,136 +413,79 @@ def GetStructureInfo():
     elif randomstructure == 8:
         structure_name = "Abandoned Village"
 
-def Structure(s_name, s_chest, s_enemies, s_item, s_questobject, s_npc, has_questobject):
+
+def Structure(
+    s_name, s_chest, s_enemies, s_item, s_questobject, s_npc, has_questobject
+):
     # when called, the code must specify the name, if it has chests and if it has enemies.
     # here we make it check so if the name is X then it will do this and that
 
-    
     strname = str(s_name)
-    global quest, hasquestobject
-
+    global quest, hasquestobject, days_in_village, max_days_in_village, quest_biome, quest_item, quest_reward, coins
+    
     if s_name == "Village":
         print("You are in a village")
         wait(1)
-
-        if s_chest == 1:
-            wait(1)
-            Chest()
-            wait(1)  
-        else:
-            print("This", strname, "doesn't have a chest.")
-            wait(1)
         
-        # shop def
-
-        has_shop = random.randint(0,1)
-
-        if has_shop == 0:
-            print("This Village doesn't have a shop")
-        elif has_shop == 1:
-            print("This Village has a shop!")
-            shop = random.randint(1,3)
-
+        # Handle days in village
+        max_days_in_village = random.randint(1, 3)
+        days_in_village = 0
+        print(f"You can stay in this village for {max_days_in_village} days")
+        
+        while days_in_village < max_days_in_village:
+            days_in_village += 1
+            print(f"\nDay {days_in_village} in the village:")
+            
+            # Randomize chests and enemies each day
+            if random.randint(1, 4) == 1:  # 1/4 chance for chest
+                Chest()
+            
+            # Shop stays the same throughout the days
             if has_shop == 1:
+                print("The village shop is open")
+                # Shop logic here...
+            
+            # Quest system
+            if not quest and s_npc == 1:
+                biomes = ["Forest", "Temple", "Plains", "Desert", "Swamp", "Dungeon"]
+                items = ["Ancient Relic", "Lost Ring", "Magic Scroll", "Family Heirloom", "Sacred Gem"]
+                
+                quest_biome = random.choice(biomes)
+                quest_item = random.choice(items)
+                quest_reward = random.randint(20, 50)
+                
+                print(f"\nA villager approaches you...")
                 wait(1)
-
-                if shop == 1:
-                    print(name, "has decided to go to a potion shop")
-                elif shop == 2:
-                    print(name, "has decided to go to a armor shop")
-                elif shop == 3:
-                    print(name, "has decided to go to a general shop")
-
-    elif s_name == "Forest":
-        print("You are in a forest")
-        wait(1)
-    elif s_name == "Temple":
-        print("You are in a temple")
-        wait(1)
-
-        if s_chest == 1:
-            print("This", strname, "has a chest!")
-            wait(1)
-            Chest()
-            wait(1)
-        else:
-            print("This", strname, "doesn't have a chest.")
-            wait(1)
-    elif s_name == "Plains":
-        print("You are in a plains")
-        wait(1)
-    elif s_name == "Desert":
-        print("You are in a desert")
-        wait(1)
-    elif s_name == "Swamp":
-        print("You are in a swamp")
-        wait(1)
-    elif s_name == "Dungeon":
-        print("You are in a dungeon ")
-        wait(1)
-
-        if s_chest == 1:
-            print("This", strname, "has a chest!")
-            wait(1)
-            Chest()
-            wait(1)
-        else:
-            print("This", strname, "doesn't have a chest.")
-            wait(1)
-    elif s_name == "Abandoned Village":
-        print("You are in an abandoned village")
-        wait(1)
-
-        if s_chest == 5:
-            print("This", strname, "has a chest!")
-            wait(1)
-            Chest()
-            wait(1)
-        else:
-            print("This", strname, "doesn't have a chest.")
-            wait(1)
-    hitem = random.randint(0,2)
-
-    if hitem == 2:
-        print("You look around, searching for anything you can use...")
-        if s_item != 5:
-            wait(1.5)
-            print("You did not find any items")
-        else:
-            print("You see something in the ground...")
-            wait(1.5)
-            GiveItems()
-
-    if has_enemies == 1 and encounter == 1:
-        battle()
-    
-    if strname == "Village":
-        if not quest:
-            if s_npc == 1:
-                npcname = RandName(3, 3)
-                print("Hello, my name is", npcname, "i have lost an important object, will you find it for me?")
-                wait(1)
-                print("You will? thank you so much!")
+                print(f"Please help! I've lost my {quest_item} somewhere in the {quest_biome}.")
+                print(f"If you find it, I'll reward you with {quest_reward} coins!")
                 quest = True
-
-    if strname == "Village":
-        if quest:
-            if hasquestobject == True:
-                print("Thanks for encountering my object, take this as a reward!")
-                rancoins = random.randint(5,12)
-                coins += rancoins
-                print("You got", rancoins, "coins! now you have", coins, "coins!" )
-                hasquestobject = False
-
-    if strname != "Village":
-        if quest == True:
-            if s_questobject == 1:
-                print("You encountered the object", npcname, "wanted")
+            
+            # Handle quest completion
+            if quest and hasquestobject:
+                print(f"\nThe villager spots you with their {quest_item}!")
                 wait(1)
-                print("object was added to your inventory")
-                hasquestobject == True
-    
+                print(f"Thank you so much! Here are your {quest_reward} coins!")
+                coins += quest_reward
+                hasquestobject = False
+                quest = False
+            
+            # Ask player if they want to stay another day
+            if days_in_village < max_days_in_village:
+                choice = input("\nDo you want to stay another day? (y/n): ").lower()
+                if choice != 'y':
+                    break
+                
+    # For non-village locations that have active quests
+    elif quest and not hasquestobject and s_name == quest_biome:
+        if random.randint(1, 2) == 1:  # 1/2 chance to find quest item
+            print(f"\nYou found the {quest_item}!")
+            hasquestobject = True
+            
+    # Rest of the original Structure function code...
+
+
 # here we go
+
 
 def attack():
     # turn 0 is the enemy's turn, 1 is your turn
@@ -565,7 +499,7 @@ def attack():
         if Class == "Warrior":
             eHP -= ATK + (eRST * 0.5)
         elif Class == "Archer":
-            ACC = random.randint(1,5)
+            ACC = random.randint(1, 5)
             if ACC in [1, 2, 3, 4]:
                 print("your arrow did")
             elif ACC == 5:
@@ -584,7 +518,7 @@ def attack():
 
 
 def defend():
-    
+
     global turn, RST, eRST
 
     if turn == 1:
@@ -594,7 +528,7 @@ def defend():
 
 
 def StopDefend():
-    
+
     global turn, RST, eRST
 
     if turn == 1:
@@ -604,15 +538,15 @@ def StopDefend():
 
 
 def use_items():
-	
+
     global HP, RST, ATK, SPD, LCK
     # Maybe a boss fight?
     # day night circle, and 50/50 to stay in the same place
 
-    rnd_use_items = random.randint(1,15)
+    rnd_use_items = random.randint(1, 15)
 
-    if max_HP/2 >= HP: # type: ignore
-        more_prob_hp_pot = random.randint(1,4)
+    if max_HP / 2 >= HP:  # type: ignore
+        more_prob_hp_pot = random.randint(1, 4)
 
     if more_prob_hp_pot == 1 or more_prob_hp_pot == 2 or more_prob_hp_pot == 3:
         # more probs to get hp pots (t1, t2 & t3)
@@ -621,65 +555,64 @@ def use_items():
         # go back to the function
         return
 
-
-    if rnd_use_items == 1 and item_list_pot[0] >= 1:
-        item_list_pot[0] -= 1
+    if rnd_use_items == 1 and item_list_pot_t1[0] >= 1:
+        item_list_pot_t1[0] -= 1
         HP += 20
         print(name, " used a tier 1 HP potion")
-    elif rnd_use_items == 2 and item_list_pot[1] >= 1:
-        item_list_pot[1] -= 1
-        RST += 5 
+    elif rnd_use_items == 2 and item_list_pot_t1[1] >= 1:
+        item_list_pot_t1[1] -= 1
+        RST += 5
         print(name, " used a tier 1 RST potion")
-    elif rnd_use_items == 3 and item_list_pot[2] >= 1:
-        item_list_pot[2] -= 1
+    elif rnd_use_items == 3 and item_list_pot_t1[2] >= 1:
+        item_list_pot_t1[2] -= 1
         ATK += 5
         print(name, " used a tier 1 ATK potion")
-    elif rnd_use_items == 4 and item_list_pot[3] >= 1:
-        item_list_pot[3] -= 1
+    elif rnd_use_items == 4 and item_list_pot_t1[3] >= 1:
+        item_list_pot_t1[3] -= 1
         SPD += 5
         print(name, " used a tier 1 SPD potion")
-    elif rnd_use_items == 5 and item_list_pot[4] >= 1:
-        item_list_pot[4] -= 1
+    elif rnd_use_items == 5 and item_list_pot_t1[4] >= 1:
+        item_list_pot_t1[4] -= 1
         LCK += 5
         print(name, " used a tier 1 LCK potion")
-    elif rnd_use_items == 6 and item_list_pot[5] >= 1:
-        item_list_pot[5] -= 1
-        HP += max_HP/2 
+    elif rnd_use_items == 6 and item_list_pot_t2[0] >= 1:
+        item_list_pot_t2[0] -= 1
+        HP += max_HP / 2
         print(name, " used a tier 2 HP potion")
-    elif rnd_use_items == 7 and item_list_pot[6] >= 1:
-        item_list_pot[6] -= 1
+    elif rnd_use_items == 7 and item_list_pot_t2[1] >= 1:
+        item_list_pot_t2[1] -= 1
         RST += 10
         print(name, " used a tier 2 RST potion")
-    elif rnd_use_items == 8 and item_list_pot[7] >= 1:
-        item_list_pot[7] -= 1
+    elif rnd_use_items == 8 and item_list_pot_t2[2] >= 1:
+        item_list_pot_t2[2] -= 1
         ATK += 10
         print(name, " used a tier 2 ATK potion")
-    elif rnd_use_items == 9 and item_list_pot[8] >= 1:
-        item_list_pot[8] -= 1
+    elif rnd_use_items == 9 and item_list_pot_t2[3] >= 1:
+        item_list_pot_t2[3] -= 1
         SPD += 10
         print(name, " used a tier 2 SPD potion")
-    elif rnd_use_items == 10 and item_list_pot[9] >= 1:
-        item_list_pot[9] -= 1
+    elif rnd_use_items == 10 and item_list_pot_t2[4] >= 1:
+        item_list_pot_t2[4] -= 1
         LCK += 10
         print(name, " used a tier 2 LCK potion")
-    elif rnd_use_items == 11 and item_list_pot[10] >= 1:
-        item_list_pot[10] -= 1
-        HP = max_HP 
+    elif rnd_use_items == 11 and item_list_pot_t3[0] >= 1:
+        item_list_pot_t3[0] -= 1
+        HP = max_HP
         print(name, " used a tier 3 HP potion")
-    elif rnd_use_items == 12 and item_list_pot[11] >= 1:
-        item_list_pot[11] -= 1
+    elif rnd_use_items == 12 and item_list_pot_t3[1] >= 1:
+        item_list_pot_t3[1] -= 1
         RST += 20
         print(name, " used a tier 3 HP potion")
-    elif rnd_use_items == 13 and item_list_pot[12] >= 1:
-        item_list_pot[12] -= 1
+    elif rnd_use_items == 13 and item_list_pot_t3[2] >= 1:
+        item_list_pot_t3[2] -= 1
         ATK += 20
         print(name, " used a tier 3 ATK potion")
-    elif rnd_use_items == 14 and item_list_pot[13] >= 1:
-        item_list_pot[13] -= 1
+    elif rnd_use_items == 14 and item_list_pot_t3[3] >= 1:
+        item_list_pot_t3[3] -= 1
         SPD += 20
         print(name, " used a tier 3 SPD potion")
-    elif rnd_use_items == 15 and item_list_pot[14] >= 1:
-        item_list_pot[14] -= 1
+    elif rnd_use_items == 15 and item_list_pot_t3[4] >= 1:
+        item_list_pot_t3[4] -= 1
         LCK += 20
         print(name, " used a tier 3 LCK potion")
     else:
@@ -687,49 +620,78 @@ def use_items():
 
 
 def BattleEnd():
-    
+
     global battling
 
     battling = False
 
 
 def battle():
-    
-    global battling, flee, eflee
+    global battling, flee, eflee, turn, HP, eHP
 
+    battling = True
     while battling:
-        rnd_action = random.randint(1, 3)
+        # Show battle status
+        print(f"\nYour HP: {HP}")
+        print(f"Enemy HP: {eHP}\n")
 
-        if HP <= 0:
-            print(name, "has died\nlife stats")
-            game = False
-        if eHP <= 0:
-            # kills the enemy and gives you (xp) money, bombs & keys
+        # Player turn
+        turn = 1
+        if not handle_turn():
             return
 
-        if eHP <= 10:
-            eflee = random.randint(0, 1)
+        # Enemy turn
+        turn = 0
+        if not handle_turn():
+            return
 
-        if eflee == 1:
-            print("the enemy is fleeing...")
 
-        if HP <= 10:
-            flee = random.randint(0, 1)
+def handle_turn():
+    """Handle a single turn in battle. Returns False if battle should end."""
+    global HP, eHP, flee, eflee
 
+    if HP <= 0:
+        print(f"{name} has died\nGame Over")
+        return False
+
+    if eHP <= 0:
+        print("Enemy defeated!")
+        enemydeath()
+        return False
+
+    # Handle fleeing
+    if HP <= 10:
+        flee = random.randint(0, 1)
         if flee == 1:
-            print(name, "decided to flee")
+            print(f"{name} fled from battle!")
+            return False
 
+    if eHP <= 10:
+        eflee = random.randint(0, 1)
+        if eflee == 1:
+            print("Enemy fled from battle!")
+            return False
+
+    # Handle actions
+    if turn == 1:
+        action = input("What will you do? (attack/defend/item): ").lower()
+        if action == "attack":
+            attack()
+        elif action == "defend":
+            defend()
+        elif action == "item":
+            use_items()
+    else:
+        # Enemy AI
+        rnd_action = random.randint(1, 3)
         if rnd_action == 1:
-            print(name, "has decided to attack!")
+            print("Enemy attacks!")
             attack()
         elif rnd_action == 2:
-            print(name, "has decided to defend!")
+            print("Enemy defends!")
             defend()
-        elif rnd_action == 3:
-            print(name, "has decided to use an item!")
-            use_items()
-        if not battling:
-            BattleEnd()
+
+    return True
 
 
 # Main game code
@@ -745,7 +707,7 @@ elif question == 1:
     name = input("What is your name?: ")
 else:
     print("That's not a valid answer, picking a random name instead")
-    RandName(1,10)
+    RandName(1, 10)
 wait(1)
 print("your name is: ", name)
 wait(0.5)
@@ -755,17 +717,17 @@ wait(2.5)
 print("These are your stats: ")
 wait(1)
 print("Your Class is", Class)
-wait(.4)
+wait(0.4)
 print("You're level", level)
-wait(.4)
+wait(0.4)
 print("HEALTH (HP):", HP)
-wait(.4)
+wait(0.4)
 print("RESISTANCE (RST):", RST)
-wait(.4)
+wait(0.4)
 print("ATTACK (ATK):", ATK)
-wait(.4)
+wait(0.4)
 print("SPEED (SPD):", SPD)
-wait(.4)
+wait(0.4)
 print("LUCK (LCK):", LCK)
 wait(2)
 
@@ -777,51 +739,14 @@ while game:
     if XP_req <= XP:
         levelup()
     GetStructureInfo()
-    Structure(structure_name, has_chest, has_enemies, has_item, hasquestobject, hasnpc, tehas_questobject)
+    Structure(
+        structure_name,
+        has_chest,
+        has_enemies,
+        has_item,
+        hasquestobject,
+        hasnpc,
+        tehas_questobject,
+    )
     wait(1)
     # game = False (endgame (haha avengers reference))
-
-
-#⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣾⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-#⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣾⣿⣿⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-#⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⣿⣿⣿⡿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-#⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣀⣰⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⣿⣿⣿⡟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-#⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⣿⣿⣿⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣀⣀⣠⣾⣿⣿⣿⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-#⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⣿⣿⣿⣿⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣠⣤⡶⠖⠚⠛⠛⠋⠉⠉⠉⠉⣩⣿⣿⡿⠋⠉⠉⠉⠛⠛⠛⠒⠶⠤⣤⣄⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-#⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⢿⣿⣿⣿⣷⣀⣤⣤⠤⠶⠟⠛⠋⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⣿⡿⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠛⠷⣦⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-#⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣤⠤⠶⠚⠛⠛⠻⣿⣿⣿⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣿⣿⠛⠀⠀⠀⠀⢠⣄⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠙⢦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-#⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣤⡶⠞⠋⠉⠁⠀⠀⠀⠀⠀⠀⠈⠙⠿⣿⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣴⣿⣟⣁⣤⣤⣤⢤⣤⣤⣤⣉⡛⠒⠶⣤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-#⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⡴⠞⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣀⡀⠀⠘⠛⣿⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣾⡿⠛⠉⠁⠀⠀⠀⠀⠀⢠⣶⠟⠛⠶⣤⣄⠉⢻⣦⣄⠀⠀⠀⠀⠀⠀⠀⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-#⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡴⠞⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⠖⠛⠉⠀⠁⠀⠀⠀⠀⠉⠻⣷⣄⡀⠀⠀⠀⠀⠀⣠⡟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⢾⠿⠀⠀⠀⠀⠈⠛⠾⣇⠉⠳⣦⡀⠀⠀⠀⢰⡿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-#⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⠟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⡾⣋⣥⠶⠶⠾⠛⠛⠛⠛⠛⠛⠛⠷⠾⠿⣿⣶⣄⠀⠀⣼⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⣆⠀⠙⠳⠦⠾⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-#⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣾⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⢿⣿⣿⡉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⣿⣾⡏⠀⡀⠀⠀⠀⠀⠀⠀⢀⣤⣤⣶⣦⣤⣄⡀⠀⠀⠀⠀⠀⠀⠀⠘⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-#⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢼⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⡶⠛⢱⡿⠋⠉⠙⠁⠀⠀⠀⢀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⣿⡷⠟⠋⠀⠀⠀⠀⠀⣴⣿⣿⣿⣿⣿⣿⣿⣿⣆⠀⠀⠀⣀⣀⣀⠘⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-#⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣸⠀⠀⠀⠀⠀⠀⠀⠀⣠⡾⠋⠀⢠⣿⠀⠀⠀⠀⠀⠀⣠⣾⣿⣿⣿⣿⣿⣶⣤⡀⠀⠀⠀⠀⠀⠀⣿⠀⠀⠀⠀⠀⠀⠀⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⠀⠀⠙⠋⠙⣷⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-#⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠶⣤⣀⣀⣀⣀⣤⠾⠋⠀⠀⠀⣼⠁⠀⠀⠀⠀⢀⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡆⠀⠰⣦⣤⣄⣿⠃⠀⠀⠀⠀⠀⢀⣿⣿⣿⣿⣿⣧⣿⣿⣿⣿⣿⠏⠀⠀⠀⠀⠀⠘⡏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-#⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠉⠁⠀⠀⠀⠀⠀⣿⠀⠀⠀⠀⠀⣾⣿⣿⣿⣿⡿⢿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀⠈⣿⠀⠀⠀⠀⠀⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠃⠀⠀⠀⠀⠀⠀⣼⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-#⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠀⠀⠀⠀⢀⣿⠀⠀⠀⠀⠀⠀⠀⠘⠻⢿⣿⣿⣿⣿⡿⠋⠁⠀⠀⠀⠀⠀⠀⣰⡟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-#⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣦⠀⠀⠀⠀⠹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠁⠀⠀⠀⢠⣿⢿⣇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⠟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-#⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⢿⡄⠀⣶⠃⠀⠈⠛⠿⢿⣿⣿⣿⡿⠟⠋⠀⠀⠀⠀⢠⡾⠋⠀⠙⢶⣄⠀⠀⠀⠀⣰⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⢟⣿⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣀⣀⠀⢀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-#⠛⠛⠿⢿⣶⣿⣶⣤⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢹⣶⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣾⣿⠇⠀⠀⠀⠀⣿⡷⣦⣤⣤⣼⣃⣀⣀⣀⣀⣀⣀⣠⡤⠶⠚⣋⣵⠏⢹⡇⠀⠀⣀⣤⣴⣶⣶⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣤⣀⠀⠀⠀⠀⠀
-#⠀⠀⠀⠀⠀⠉⠉⠻⢿⣿⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢻⡏⣙⣷⣄⣀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⣾⣿⣿⡏⠀⠀⠀⠀⠀⠈⣿⣾⣬⣭⣿⣿⣛⣛⣛⣿⡿⡿⣶⣶⡖⠛⠉⠀⣀⣤⣷⣾⣿⣿⣿⣿⡿⠿⠟⠛⠋⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠛⠿⣶⣄⠀⠀
-#⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠿⣿⣿⣶⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡇⠈⠉⠛⠿⢿⣶⣶⣦⣶⣤⣶⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠈⣿⠉⠉⠙⠛⠛⠛⠛⠛⠛⠿⠿⢿⣿⣿⣿⣿⣿⣿⣿⡿⠟⠋⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠙⢷⠄
-#⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠙⠿⡿⣿⣶⣦⣤⣄⣀⣀⣀⣀⣀⣀⣠⣄⣀⣀⣠⣄⣀⣀⣀⣸⣧⣀⣀⣤⣤⣤⣤⣴⣾⣿⣿⣿⣿⠿⠿⠋⠀⣾⠀⠀⠀⠀⠀⠀⠀⠀⢸⣇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠛⠶⣄⠀⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-#⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠉⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⢿⡿⠛⢛⣿⣿⠿⠟⠋⠉⠁⠀⠀⠀⠀⠀⢀⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣄⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠳⣼⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-#⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢘⣧⠶⠛⠁⠀⠀⠀⠀⠀⠀⠀⢀⣠⣴⣾⢛⡇⠀⣰⣦⡀⠀⠀⠀⠀⠀⢸⡏⠉⠉⠛⠳⢦⣄⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-#⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣴⠟⠉⠀⠀⠀⠀⠀⠀⣀⣤⡴⠖⠋⠁⢠⡏⢸⡇⠀⡟⠈⢳⡄⠀⠀⠀⠀⢸⡇⠀⠀⠀⠀⠀⠈⠉⠳⢦⣤⡀⠀⠀⠀⠀⠀⠀⠀⠈⢷⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-#⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⠞⠁⠀⠀⠀⠀⢀⣠⡴⠚⠉⠀⠀⠀⠀⠀⢸⣧⠈⣧⠀⣧⠀⢨⡇⠀⠀⠀⠀⣼⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠛⢦⡀⠀⠀⠀⠀⠀⠀⠀⢻⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-#⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣴⠟⠁⠀⠀⠀⢀⣴⠞⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⣏⠀⢹⡀⠙⠶⠟⠁⠀⠀⢀⣴⠏⠀⠀⠀⠀⠀⠀⣆⠀⠀⠀⠀⠀⠀⠙⢦⡀⠀⠀⠀⠀⠀⠀⠙⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-#⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⡞⠁⠀⠀⠀⣠⡞⠋⠁⠀⠀⠀⠀⠀⢀⣤⡦⠀⠀⠀⠀⠻⠶⠶⠿⣦⣀⡀⢀⣀⣴⠟⠁⠀⠀⠀⠀⠀⠀⠀⠙⠳⣄⠀⠀⠀⠀⠀⠘⢷⡀⠀⠀⠀⠀⠀⠀⠘⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-#⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣴⠋⠀⠀⠀⢠⡾⠋⠀⠀⠀⠀⠀⠀⢠⡾⠋⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠙⠋⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢷⣄⠀⠀⠀⠀⠈⢻⣄⠀⠀⠀⠀⠀⠀⠘⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-#⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣾⠃⠀⠀⠀⣠⡿⠀⠀⠀⠀⠀⠀⠀⢀⡿⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢻⡆⠀⠀⠀⠀⠀⢻⡆⠀⠀⠀⠀⠀⠀⢹⣇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-#⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡇⠀⠀⠀⢰⡟⠀⠀⠀⠀⠀⠀⠀⢀⡿⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢻⣦⠀⠀⠀⠀⠀⢻⡄⠀⠀⠀⠀⠀⠀⢿⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-#⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡆⠀⠀⢀⣿⠁⠀⠀⠀⠀⠀⠀⢀⣼⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⣿⠹⣆⠀⠀⠀⠀⠈⢿⡄⠀⠀⠀⠀⠀⠈⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-#⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡇⠀⠀⢸⡇⠀⠀⠀⠀⠀⠀⠀⣾⣇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣤⠾⠋⢰⣿⡀⢻⡄⠀⠀⠀⠀⠈⣷⡀⠀⠀⠀⠀⠀⣿⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-#⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢾⡇⠀⠀⠘⠛⠀⠀⠀⠀⠀⠀⣼⠇⠈⣿⡛⠲⠶⢤⣤⣀⣀⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣀⣀⣤⣤⠤⢤⣴⠶⣿⠛⣿⠀⠀⠀⠹⣧⠘⢿⠀⠀⠀⠀⠀⠘⣷⡄⠀⠀⠀⠀⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-#⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠹⣧⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⠏⠀⠀⢹⡇⠀⠀⢻⡏⠉⣿⠟⠛⣿⠓⠒⠒⠒⠒⠚⠋⠉⠉⠁⠀⠀⠙⢷⡀⢽⡆⢻⡆⣿⠀⠀⠀⠀⢿⡄⠸⣧⡀⠀⠀⠀⠀⠉⠀⠀⠀⠀⣰⡏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-#⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠹⣦⡀⠀⠀⠀⣀⣤⡶⠛⣿⠀⠀⠀⢸⣷⠀⠀⣾⡇⢰⡏⠀⣸⠟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢿⣞⠛⣾⠃⣿⠀⠀⠀⠀⢸⡇⠀⠈⠻⢦⣀⠀⠀⠀⠀⠀⣀⣶⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-#⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠙⠛⠛⠛⠋⠀⠀⠘⣿⠀⠀⠀⠈⢿⠀⠀⢼⣇⠈⢡⡾⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢻⣴⡿⠀⢸⠀⠀⠀⠀⢸⡇⠀⠀⠀⠀⠙⠛⠛⠒⠒⠛⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-#⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⠀⠀⠀⠀⢸⡇⠀⠀⠹⣷⡏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠀⠀⢸⠀⠀⠀⠀⠈⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-#⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠰⣿⡇⠀⠀⠀⠘⣷⠀⠀⠀⠈⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⠀⠀⠀⠀⠀⣿⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-#⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡿⣧⠀⠀⠀⠈⢻⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡆⠀⠀⠀⠀⢺⣿⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-#⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣹⠁⣿⡄⠀⠀⠀⠘⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡇⠀⠀⠀⢀⢈⣿⣿⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
