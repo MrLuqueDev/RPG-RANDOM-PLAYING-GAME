@@ -5,6 +5,24 @@ import time
 # RPG.py remake because our code was an UNBEARABLE mess.
 # TODO: fucking kys
 
+# stats
+
+HP = None
+ATK = None
+DEF = None
+SPD = None
+LCK = None
+CRITPROB = None
+CRITDMG = None
+Class = ""
+
+level = None
+XP = None
+XP_req = None
+XP_res = None
+
+# structure variables
+
 structure_list = [
     ["Village", "Abandoned Village"], # Village 
     ["Dungeon", "Lava Dungeon"], #
@@ -13,6 +31,13 @@ structure_list = [
     ["Desert", "Crystal Desert"]
     ]
 structure = None
+chest = None # bool
+enemies = None # bool
+
+# stats functions
+
+def defstats():
+    
 
 # Dev functions
 
@@ -48,6 +73,15 @@ def genstructure(g_structure):
 
 
 # main game
+
+wait(1)
+print("------------------------------")
+wait(0.5)
+print("         [Welcome to]         ")
+wait(0.5)
+print("             [RPG]            ")
+wait(0.5)
+print("------------------------------")
 
 while True:
     genstructure(getstructure())
