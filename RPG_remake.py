@@ -5,13 +5,29 @@ import time
 # RPG.py remake because our code was an UNBEARABLE mess.
 # TODO: fucking kys
 
-structure_list = ["Village", "Dungeon", "Castle", "Abandoned Village"]
+structure_list = ["Village", "Abandoned Village"], 
+                 ["Dungeon", "Lava Dungeon"], 
+                 ["Castle", "Floating Castle"],  
+                 ["Forest", "Hardwood Forest"],
+                 ["Desert", "Crystal Desert"]
 structure = None
 
 # functions for structure functionability
 
-def Village():
+def Villages():
     return "Village"
+
+def Dungeon():
+    return "Dungeon"
+
+def Castle():
+    return "Castle"
+
+def Forest():
+    return "Forest"
+
+def Desert():
+    return "Dungeon"
 
 # structure generation functions
 
@@ -25,4 +41,5 @@ def genstructure(g_structure):
 
 # main game
 
-genstructure(getstructure())
+while True:
+    break
