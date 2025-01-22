@@ -3,12 +3,13 @@ import random
 import time
 
 # RPG.py remake because our code was an UNBEARABLE mess.
-# TODO: fucking kys
+# TODO: in the classes list add a matrix (matrix haha funni) where there's the class and the stats so if you want a new class you have it more automatically
 
 # Game Variables
 
 game = True
 name = ""
+mode = None # manual mode or random mode used for selecting names classes and etc, 1 = manual, 0 = random
 
 # stats
 
@@ -46,7 +47,34 @@ enemies = None # bool
 # Game functions
 
 def defstats():
-    return "Stats"
+    global HP, RST, ATK, DEF, SPD, LCK, Class_list, Class
+    if mode == 0:
+        Class = Class_list[random.randint(0, len(Class_list)-1)]
+        HP = random.randint(75, 150)
+        RST = random.randint(1, 5)
+        ATK = round(math.log(random.randint(5, 15)))
+        SPD = 10
+        LCK = random.randint(-10, 10)
+    else: # im really fucking tired right now and dont really want to make an optimized version / automatic version of this so im doing it and ill do a list or smth tomorrow
+        Class = input("Type your preferred class type: ")
+        if Class == "Warrior":
+            HP = 100
+            RST = 5
+            ATK = 7
+            SPD = 10
+            LCK = 0
+        elif Class == "Wizard":
+            HP = 100
+            RST = 5
+            ATK = 7
+            SPD = 10
+            LCK = 0
+        elif Class == "Archer":
+            HP = 69
+            RST = 5
+            ATK = 7
+            SPD = 10
+            LCK = 0
 
 def levelup():
     global HP, ATK, DEF, SPD, LCK, CRITPROB, CRITDMG, Class, MP, XP, XP_req, XP_res, level
@@ -158,14 +186,15 @@ print("             [RPG]            ")
 wait(0.5)
 print("------------------------------")
 
-question = int(input("Want a random name (0) or your own name (1)?: "))
+mode = int(input("Want a random name (0) or your own name (1)?: "))
 
-if question == 0:
+if mode == 0:
     RandName(1, 10)
-elif question == 1:
+elif mode == 1:
     name = input("What is your name?: ")
 else:
     print("That's not a valid answer, picking a random name instead")
+    mode = 1
     RandName(1, 10)
 wait(1)
 print("your name is: ", name)
@@ -173,11 +202,27 @@ wait(0.5)
 defstats()
 FunNames()
 wait(2.5)
+print("These are your stats: ")
+wait(1)
+print("Your Class is", Class)
+wait(0.4)
+print("You're level", level)
+wait(0.4)
+print("HEALTH (HP):", HP)
+wait(0.4)
+print("RESISTANCE (RST):", RST)
+wait(0.4)
+print("ATTACK (ATK):", ATK)
+wait(0.4)
+print("SPEED (SPD):", SPD)
+wait(0.4)
+print("LUCK (LCK):", LCK)
+wait(2)
 
 while game:
     if HP <= 0:
         break
-    if XP_req <= XP:
-        levelup()
+    # if XP_req <= XP:
+        # levelup()
     genstructure(getstructure())
     wait(1)
