@@ -18,7 +18,11 @@ SPD = None
 LCK = None
 CRITPROB = None
 CRITDMG = None
+
+Class_list = ["Warrior", "Archer", "Wizard"]
 Class = ""
+MP = None
+ACC = None
 
 level = None
 XP = None
