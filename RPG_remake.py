@@ -7,6 +7,7 @@ import time
 
 # Game Variables
 
+game = True
 name = ""
 
 # stats
@@ -47,8 +48,33 @@ enemies = None # bool
 def defstats():
     return "Stats"
 
-def FunNames():
+def levelup():
+    global HP, ATK, DEF, SPD, LCK, CRITPROB, CRITDMG, Class, MP, XP, XP_req, XP_res, level
 
+    level += 1
+    
+    if Class == "Wizard":
+        MP += None
+        
+    HP += None
+    ATK += None
+    DEF += None
+    SPD += None
+    LCK += None
+    CRITPROB += None
+    CRITDMG += None
+
+    XP -= XP_req
+    XP_req *= 2
+    XP_res = XP - XP_req
+
+    if XP_res > 0:
+        XP += XP_res
+        XP_res = 0
+    else:
+        XP_res = 0
+
+def FunNames():
     global name, game, HP, RST, LCK, ATK, SPD
 
     if name == "hugo":
@@ -148,6 +174,10 @@ defstats()
 FunNames()
 wait(2.5)
 
-while True:
+while game:
+    if HP <= 0:
+        break
+    if XP_req <= XP:
+        levelup()
     genstructure(getstructure())
     wait(1)
