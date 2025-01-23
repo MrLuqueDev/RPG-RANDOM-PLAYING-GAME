@@ -32,6 +32,11 @@ XP = None
 XP_req = None
 XP_res = None
 
+# spell stuff
+
+spell_list = ["Fireball","Healing spell","Frozen shield","Thunderbolt","Weakness","Strength","SHADOW WIZARD MONEY GANG"]
+spell_DMG = None
+
 # enemy stats
 
 eHP = None
@@ -174,6 +179,23 @@ def defenemystats(elevel, isBoss):
         eATK = 5 + elevel
         eDEF = round(4 + (elevel / 1.5))
         eSPD = round(2 + (elevel / 2))
+
+def spells():
+    global spell_list, spell_DMG
+
+    rndspell = random.choice(spell_list)
+    if rndspell == spell_list[0]:
+        return
+    elif rndspell == spell_list[1]:
+        return
+    elif rndspell == spell_list[2]:
+        return
+    elif rndspell == spell_list[3]:
+        return
+    elif rndspell == spell_list[4]:
+        return
+    elif rndspell == spell_list[5]:
+        return
 
 def RandName(char_min, char_max):
     for i in range(random.randint(char_min, char_max)):
