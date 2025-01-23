@@ -9,6 +9,7 @@ import time
 
 game = True
 name = ""
+ename = ""
 mode = None # manual mode or random mode used for selecting names classes and etc, 1 = manual, 0 = random
 
 # stats
@@ -30,6 +31,17 @@ level = None
 XP = None
 XP_req = None
 XP_res = None
+
+# enemy stats
+
+eHP = None
+eATK = None
+eDEF = None
+eSPD = None
+
+elevel = None
+isElite = None
+isBoss = None
 
 # structure variables
 
@@ -120,22 +132,48 @@ def FunNames():
         wait(1.5)
         print("well too bad, you already chose it now HAAHAHAHAHAHAHA")
         HP = 50
-        RST = 1
         ATK = 5
+        DEF = 1
         SPD = 5
         LCK = -10
     elif name == "govus":
         HP = 149
-        RST = 1
         ATK = 2
+        DEF = 1
         SPD = 10
         LCK = 10
     elif name == "jester":
         HP = 50
-        RST = 1
         ATK = 5
+        DEF = 1
         SPD = 5
         LCK = 10
+
+def defenemystats(elevel, isBoss):
+    global eHP, eATK, eDEF, eSPD, ename
+
+    rndelite = random.randint(1, 20)
+    if rndelite == 1:
+        isElite = 1
+    
+    if isBoss:
+        ename = "" # Boss name in caps?
+        eHP = None
+        eATK = None
+        eDEF = None
+        eSPD = None
+    elif isElite:
+        ename = "" # Elite name with decoration?
+        eHP = None
+        eATK = None
+        eDEF =  None
+        eSPD = None
+    else:
+        ename = RandName(1, 7)
+        eHP = 100 + (elevel * 15)
+        eATK = 5 + elevel
+        eDEF = round(4 + (elevel / 1.5))
+        eSPD = round(2 + (elevel / 2))
 
 def RandName(char_min, char_max):
     for i in range(random.randint(char_min, char_max)):
