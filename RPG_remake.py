@@ -64,32 +64,33 @@ enemies = None # bool
 # Game functions
 
 def defstats():
-    global HP, RST, ATK, DEF, SPD, LCK, Class_list, Class
+    global HP, ATK, DEF, SPD, LCK, CRITPROB, CRITDMG, Class_list, Class, MP
     if mode == 0:
         Class = Class_list[random.randint(0, len(Class_list)-1)]
         HP = random.randint(75, 150)
-        RST = random.randint(1, 5)
-        ATK = round(math.log(random.randint(5, 15)))
+        ATK = random.randint(7, 12)
+        DEF = random.randint(5, 10)
         SPD = 10
         LCK = random.randint(-10, 10)
     else: # im really fucking tired right now and dont really want to make an optimized version / automatic version of this so im doing it and ill do a list or smth tomorrow
         Class = input("Type your preferred class type: ")
         if Class == "Warrior":
             HP = 100
-            RST = 5
             ATK = 7
+            DEF = 5
             SPD = 10
             LCK = 0
         elif Class == "Wizard":
             HP = 100
-            RST = 5
             ATK = 7
+            DEF = 5
             SPD = 10
             LCK = 0
+            MP = 10
         elif Class == "Archer":
             HP = 69
-            RST = 5
             ATK = 7
+            DEF = 5
             SPD = 10
             LCK = 0
 
@@ -99,15 +100,15 @@ def levelup():
     level += 1
     
     if Class == "Wizard":
-        MP += None
+        MP += random.randint(1, 3)
         
-    HP += None
-    ATK += None
-    DEF += None
-    SPD += None
-    LCK += None
-    CRITPROB += None
-    CRITDMG += None
+    HP += 16
+    ATK = round(ATK + (level / 0.75))
+    DEF += 1
+    SPD = round(SPD + (level / 0.25))
+    LCK += None # do we increase with lvl?
+    CRITPROB = round(CRITPROB + (level / 0.5))
+    CRITDMG += 5
 
     XP -= XP_req
     XP_req *= 2
