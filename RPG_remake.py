@@ -1,22 +1,24 @@
+# RPG.py remake because our code was an UNBEARABLE mess.
+# TODO: in the classes list add a matrix (matrix haha funni) where there's the class and the stats so if you want a new class you have it more automatically
+
+# Import libraries
+
 import math
 import random
 import time
 
-# RPG.py remake because our code was an UNBEARABLE mess.
-# TODO: in the classes list add a matrix (matrix haha funni) where there's the class and the stats so if you want a new class you have it more automatically
-
 # Game Variables
 
 game = True
-name = ""
-ename = ""
+name = "" # This is the player's name, duh :v
+ename = "" # This is the enemy's name (this one is not so obvious)
 mode = None # manual mode or random mode used for selecting names classes and etc, 1 = manual, 0 = random
 
 # Item Variables
 
-keys = None
-coins = None
-bombs = None
+keys = None # is that a tboi reference
+coins = None # is that a tboi reference
+bombs = None # is that a tbo- SHUT THE FUCK UP
 
 # stats
 
@@ -27,14 +29,26 @@ SPD = None
 LCK = None
 CRITPROB = None
 CRITDMG = None
+DODGEPROB = None
 flee = False
 
-Class_list = ["Warrior", "Archer", "Wizard"]
+# okay killing myself im rewriting this whole shit
+
+# this matrix makes me want to google how to shove the barrel of a gun up my mouth and pull the trigger while listening to the backstreet boys.
+
+Class_list = [
+    # name, hp, atk, def, spd, lck, critprob, critdmg, dodgeprob
+    ["Random", random.randint(75, 150), random.randint(7, 12), random.randint(5, 10), 10, random.randint(-10, 10), 5, 150, 10], # Mode 1 values (class will be selected randomly after)
+    ["Warrior", 130, 10, 8, 5, 0, 5, 150, 10], # Mode 0
+    ["Archer", 90, 8, 7, 10, 2, 3, 200, 25],
+    ["Wizard", 100, 8, 8, 8, 3, 5, 150, 15] # OCHOCIENTOS OCHENTA Y OCHO
+    ]
+
 Class = ""
 MP = None
 ACC = None
 
-level = None
+level = 1
 XP = None
 XP_req = None
 XP_res = None
@@ -59,11 +73,11 @@ isBoss = None
 # structure variables
 
 structure_list = [
-    ["Village", "Abandoned Village"], # Village 
-    ["Dungeon", "Lava Dungeon"], #
-    ["Castle", "Floating Castle"],  
-    ["Forest", "Hardwood Forest"],
-    ["Desert", "Crystal Desert"]
+    ["Village", "Abandoned Village"], # Villages 
+    ["Dungeon", "Lava Dungeon"], # Dungeons
+    ["Castle", "Floating Castle"],  # Castles
+    ["Forest", "Hardwood Forest"], # Forests
+    ["Desert", "Crystal Desert"] # Desert
     ]
 structure = None
 chest = False
@@ -74,34 +88,21 @@ enemies = False
 def defstats():
     global HP, ATK, DEF, SPD, LCK, CRITPROB, CRITDMG, Class_list, Class, MP
     if mode == 0:
-        Class = Class_list[random.randint(0, len(Class_list)-1)]
-        HP = random.randint(75, 150)
-        ATK = random.randint(7, 12)
-        DEF = random.randint(5, 10)
-        SPD = 10
-        LCK = random.randint(-10, 10)
-    else: # im really fucking tired right now and dont really want to make an optimized version / automatic version of this so im doing it and ill do a list or smth tomorrow
-        Class = input("Type your preferred class type: ")
-        if Class == "Warrior":
-            HP = 100
-            ATK = 7
-            DEF = 5
-            SPD = 10
-            LCK = 0
-        elif Class == "Wizard":
-            HP = 100
-            ATK = 7
-            DEF = 5
-            SPD = 10
-            LCK = 0
-            MP = 10
-        elif Class == "Archer":
-            HP = 69
-            ATK = 7
-            DEF = 5
-            SPD = 10
-            LCK = 0
-
+        random_index = random.randint(1, len(Class_list) - 1)
+        Class = Class_list[random_index][0]  # Class name
+        HP = Class_list[random_index][1]  # Class stats
+        ATK = Class_list[random_index][2]
+        DEF = Class_list[random_index][3]
+        SPD = Class_list[random_index][4]
+        LCK = Class_list[random_index][5]
+    else: # hey uhh quick note from the future (wow) uhh it wasnt tomorrow it took me like 3 days to get into it and it fucking sucks please kill me
+        var = int(input("Type your preferred class type: "))
+        Class = Class_list[var][0]
+        HP = Class_list[var][1]
+        ATK = Class_list[var][2]
+        DEF = Class_list[var][3]
+        SPD = Class_list[var][4]
+        LCK = Class_list[var][5]
 def levelup():
     global HP, ATK, DEF, SPD, LCK, CRITPROB, CRITDMG, Class, MP, XP, XP_req, XP_res, level
 
@@ -129,7 +130,7 @@ def levelup():
         XP_res = 0
 
 def FunNames():
-    global name, game, HP, RST, LCK, ATK, SPD
+    global name, game, HP, DEF, LCK, ATK, SPD
 
     if name == "hugo":
         wait(1)
@@ -258,7 +259,6 @@ def Desert():
 def getstructure():
     global structure_list, structure
     structure = structure_list[random.randint(0, len(structure_list) - 1)]
-    # return structure_list[structure[random.randint(0, len(structure) - 1)]]
     return structure[random.randint(0, len(structure) - 1)]
 def genstructure(g_structure):
     print(g_structure)
@@ -299,9 +299,9 @@ print("You're level", level)
 wait(0.4)
 print("HEALTH (HP):", HP)
 wait(0.4)
-print("RESISTANCE (RST):", RST)
-wait(0.4)
 print("ATTACK (ATK):", ATK)
+wait(0.4)
+print("DEFENCE (DEF):", DEF)
 wait(0.4)
 print("SPEED (SPD):", SPD)
 wait(0.4)
