@@ -12,6 +12,12 @@ name = ""
 ename = ""
 mode = None # manual mode or random mode used for selecting names classes and etc, 1 = manual, 0 = random
 
+# Item Variables
+
+keys = None
+coins = None
+bombs = None
+
 # stats
 
 HP = None
@@ -21,6 +27,7 @@ SPD = None
 LCK = None
 CRITPROB = None
 CRITDMG = None
+flee = False
 
 Class_list = ["Warrior", "Archer", "Wizard"]
 Class = ""
@@ -43,6 +50,7 @@ eHP = None
 eATK = None
 eDEF = None
 eSPD = None
+eflee = False
 
 elevel = None
 isElite = None
@@ -58,8 +66,8 @@ structure_list = [
     ["Desert", "Crystal Desert"]
     ]
 structure = None
-chest = None # bool
-enemies = None # bool
+chest = False
+enemies = False
 
 # Game functions
 
@@ -196,6 +204,26 @@ def spells():
     elif rndspell == spell_list[4]:
         return
     elif rndspell == spell_list[5]:
+        return
+
+def crit_hit():
+    global CRITPROB, CRITDMG, ATK
+
+    if random.randint(1, 100) < CRITPROB:
+        ATK = round(ATK * (CRITDMG / 100))
+        print("crit hit")
+        return 1
+    else:
+        return 0
+
+def enemydeath():
+    global elevel, isElite, isBoss, keys, coins, bombs, XP
+
+    if isBoss == 1:
+        return
+    elif isElite == 1:
+        return
+    else:
         return
 
 def RandName(char_min, char_max):
