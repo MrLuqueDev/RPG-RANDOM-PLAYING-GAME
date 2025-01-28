@@ -435,7 +435,7 @@ def Forest():
     return "Forest"
 
 def Desert():
-    return "Dungeon"
+    return "Desert"
 
 # structure generation functions
 
