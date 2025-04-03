@@ -1,0 +1,5 @@
+You could pretty much just use the requirements library since thats like, the same thing
+but at the same time, That's ALSO a requirement, so you would also need to install it!
+so here is a list of the requirements you need for the program to run on your computer:
+- time (preinstalled, but just for in case: pip install time)
+- random (preinstalled, but just for in case: pip install random)
