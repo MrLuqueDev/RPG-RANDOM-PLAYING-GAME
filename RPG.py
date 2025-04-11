@@ -7,19 +7,43 @@ ____________________  ________
         \/                  \/  \/ |__|   \/     
 """
 
-# [TODO]: like, rewrite everything lmfao. okay but like seriously. 
-# 3rd Rewrite of the code, DO NOT USE AI. enhance visually, and also improve the code,like a lot, the last 2 ones were a mess, the second one was way better though... (shorter, more controllable (add more controllers to the functions) and make sure it controls multiple things at once)
+# [TODO]: like, rewrite everything lmfao. okay but like seriously. ("OkAy BuT sErIoUsLy")
+# 3rd Rewrite of the code, DO NOT USE AI. enhance visually, and also improve the code, like a lot, the last 2 ones were a mess, the second one was way better though... (shorter, more controllable (add more controllers to the functions) and make sure it controls multiple things at once)
+# Based on the day, enemies will get stronger, exponentially as well, and based on the level too. (:skull:)
+
 
 # [IMPORTS]: because, we need stuff...
 import random
 import time
 
 # [VARIABLES]: there's literally just one fucking var-
+
+run = True
 name = ""
+lvl = 1
+XP = 0
+XPR = 100
+HP = None
+RES = None
+ATK = None
+SPD = None
+LCK = None
+MANA = None # Wizard excluive
+Class = ""  # Class is in caps bc clas means to create a new class :sob:
+coins = 0
+bombs = 0
+keys = 0
+needs_key = False
+inventory = [coins, bombs, keys]
+structures = ["Village, Dungeon, Castle"]
+structure = ""
+enemy = ""
+potions = 0
+day = True
 
 # [FUNCTIONS]: saving up space lol :money_mouth:
 
-# RANDNAME: creates a randomly generated name, this one goes for you, 5 year old kids that call yourselves "Xx_epicgamingmaster446_xX"
+# RANDNAME: creates a randomly generated 3, this one goes for you, 5 year old kids that call yourselves "Xx_epicgamingmaster446_xX"
 def randname(min, max): 
     # create a list of letters, get the min and max and add the randomly picked letter to the name.
     abc = "abcdefghijklmnopqrstuvwxyz"
@@ -28,11 +52,11 @@ def randname(min, max):
         name += abc[random.randint(0,(len(abc)-1))]
     return name # this returns so you can store it in another varaible
 
-# WAIT: completely useless function actually, but saves bytes instead of typing time.sleep everytime
+# WAIT: completely useless function actually, but saves bytes instead of typing time.sleep everytime (:nerd:)
 def wait(s):
     time.sleep(s)
 
-# Typewrite: Enhanced version of print, but more Fancy :3, 
+# Typewrite: Enhanced version of print, but more Fancy :3, (kys)
 def typewrite(text, delay, newline):
     # text is the text you want to write, delay is measured in seconds and is the time it takes to write the next letter, newline decides if it should continue the text AFTER or IN THE NEXT line
     for char in text:
@@ -41,11 +65,155 @@ def typewrite(text, delay, newline):
     if newline: # this is supposed to be a boolean, but for some reason you can use 1 and 0 so uhh yeah use that instead!
         print()  # artificial /n
 
-# Test use (placeholder for the main game)
+# [MAIN FUNCTIONS]: the oiled up machines that make this work
+# TODO: add if it needs keys, if it can have one or another, etc
+def chest_content():
+    global coins, bombs, keys, needs_key, structure
+    #This function defines the content of the chests that you find in your journey and adds it to the player's inventory
+    chest_content = random.randint(1, 2)
+    if structure == "Village" and chest_content == 1:
+        wait(0.5)
+        typewrite("You've found a coin!", .05, 1)
+        coins += 1
+    elif structure == "Dungeon" and chest_content == 1:
+        wait(0.5)
+        typewrite("You've found a key!", .05, 1)
+        keys += 1
+    elif structure == "Castle" and chest_content == 1:
+        wait(0.5)
+        typewrite("You've found a bomb!", .05, 1)
+        bombs += 1
 
-typewrite("You used your special attack... ", .05, 0)
-wait(2)
-typewrite("it was super effective!", .05, 1)
+    if needs_key == True:
+        wait(0.5)
+        typewrite("You've got a key!", .05, 1)
+        keys += 1
+
+# combat: is a fuckin' combat dude, it's not even that hard to read the code, it is easy to understand
+def combat():
+    global enemy, potions
+    enemy_life = 100
+    first_attacking = random.randint(1, 2)
+    attack_type = random.randint(1, 4)
+    enemy_attack = random.randint(1, 2)
+    wait(0.5)
+    typewrite(enemy, .05, 0)
+    typewrite("wants to fight you", .05, 1)
+    if first_attacking == 1:
+        if attack_type == 1:
+            wait(0.5)
+            typewrite("You've done a standart attack!", .05, 1)
+            enemy_life -= 15
+        elif attack_type == 2:
+            wait(0.5)
+            typewrite("THAT WAS A CRITICAL ATTACK", .05, 1)
+            enemy_life -= 34
+        elif attack_type == 4 and potions > 0:
+            wait(0.5)
+            typewrite("You've used a potion", .05, 1)
+            HP += 15
+            typewrite("Your HP: ", .05, 0);typewrite(HP, .05, 1)
+            potions -= 1
+        elif attack_type == 4 and potions <= 0:
+            wait(0.5)
+            typewrite("You don't have potions", .05, 1)
+        else:
+            wait(0.5)
+            typewrite("You've missed...", .05, 1)
+    else:
+        if enemy_attack == 1:
+            wait(0.5)
+            typewrite("You've been hit...", .05, 1)
+            HP -= 16
+        else:
+            wait(0.5)
+            typewrite("The enemy missed...", .05, 1)
+
+# Defclass: Im fucking done if you cant guess
+def defclass():
+    global Class
+    randclass = random.randint(1,3)
+    if randclass == 1:
+        Class = "Warrior"
+    elif randclass == 2:
+        Class = "Archer"
+    else: 
+        Class = "Wizard"
+
+# Defstats: Fucking. guess. (god im so done)
+def defstats():
+    global HP, RES, ATK, SPD, LCK, Class, MANA
+    HP = 100
+    RES = 20
+    ATK = 10
+    SPD = 5
+    LCK = 10
+    if Class == "Wizard":
+        MANA = 100
+
+# lvlup: How about you go fucking kys before i see you again
+# TODO: levels must always upgrade your hp and resistance, preferably atk too, each x levels other stats will get a level up too
+def lvlup():
+    global lvl, XP, XPR, HP, RES, ATK, SPD, LCK, Class, MANA
+    lvl += 1
+    HP += 5
+    RES += 1
+    if lvl % 2 == 0:
+        ATK += 1
+    if Class == "Wizard":
+        MANA += 5
+    XPX = 0
+    if XPR < XP:
+        XPX = XP - XPR
+    XP = 0
+    XPR *= 1.5
+    XPR += XPX
+
+# Defstructure: Work around structures (brainfuck, beyond cooked, undertanding this is an ancient art)
+def defstructure(setstructure): 
+    # SETSTRUCTURE: 0 = random, any other variable will be a set structture (read dictionary below)
+    global structure
+    structuredic = {
+        1:"Village",
+        2:"Dungeon",
+        3:"Castle"
+        }
+    if setstructure > 0:
+        structure = structuredic[setstructure]
+    else:
+        structure = random.randint
+    
+
+    
+    
+    return
+
+# [STRUCTURE FUNCTIONS]: brainfuck the sequel
+
+# Village: define village structure, 
+def village():
+    
+    chest_content()
+
+# [MAIN GAME LOOP]: GUESS WHAT THE FUCK THIS DOES!
+
+typewrite("-----------------------------------------", 0.01, 1)
+typewrite("-----------",0.01, 0);typewrite("WELCOME, TO RPG.PY!",0.1, 0);typewrite("-----------", 0.01, 1)
+typewrite("-----------------------------------------", 0.01, 1)
+print()
+wait(1)
+typewrite("First of all, let's pick your name...", 0.1, 1)
+wait(1)
+name = randname(0, 10)
+typewrite("Your name will be: ", 0.01, 0);wait(0.5);typewrite(name, 0.5, 1)
+defclass()
+typewrite("Your class will be: ", 0.01, 0);wait(1);typewrite(Class, 0.07, 1)
+defstats()
+typewrite()
+
+while run:
+    defstructure(0, 0)
+    
 
 # [First commit]: V1
 # (holy shit is that an ultrakill reference)
