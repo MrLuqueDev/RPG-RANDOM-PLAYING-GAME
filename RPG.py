@@ -27,10 +27,6 @@ errors = {
 
 run = True
 name = ""
-lvl = 1
-XP = 0
-XPR = 100
-structures = ["Village, Dungeon, Castle"]
 structure = ""
 enemy = ""
 potions = 0
@@ -47,11 +43,31 @@ class player:
     LCK = None
     MANA = None
     CLASS = None
+    LVL = None
+    XP = None
+    XPR =None
 
 class inventory:
     keys = 0
     bombs = 0
     coins = 0
+    bag = []
+
+class structures:
+    structure = ""
+    has_chest, has_enemies, chest_type, has_shop = None
+    chest_types = [
+        # coins, keys, bombs
+        [1, 0, 0], # Village chest
+        [1, 1 ,0] # Dungeon chest
+        [1, 1, 1] # Castle chest
+    ]
+    list = [ # random.randint(len(chest_types))
+        # Name, has chest, chest type, has enemies, has shop, 
+        ["Village", has_chest, chest_type, random.randint(0,1), random.randint(0,1)],
+        ["Dungeon", has_chest, chest_type, has_enemies, , random.randint(0,1)],
+        ["Castle", 1, random.randint(len(chest_types)), random.randint(0,1), random.randint(0,1)],
+    ]
 
 inventory.bombs += 1
 
@@ -108,47 +124,44 @@ def Chest(type, needs_key):
 
 # defclass: Im fucking done if you cant guess
 def defclass():
-    global Class
+    global player
     randclass = random.randint(1,3)
     if randclass == 1:
-        Class = "Warrior"
+        player.CLASS = "Warrior"
     elif randclass == 2:
-        Class = "Archer"
+        player.CLASS = "Archer"
     else: 
-        Class = "Wizard"
+        player.CLASS = "Wizard"
 
 # defstats: Fucking. guess. (god im so done)
 def defstats():
-    global HP, RES, ATK, SPD, LCK, Class, MANA
-    HP = 100
-    RES = 20
-    ATK = 10
-    SPD = 5
-    LCK = 10
-    if Class == "Wizard":
-        MANA = 100
+    global player
+    player.HP = 100
+    player.RES = 20
+    player.ATK = 10
+    player.SPD = 5
+    player.LCK = 10
+    if player.CLASS == "Wizard":
+        player.MANA = 100
 
-# defestats: 
-def defestats():
-    global HP
 
 # lvlup: How about you go fucking kys before i see you again
 # TODO: levels must always upgrade your hp and resistance, preferably atk too, each x levels other stats will get a level up too
 def lvlup():
-    global lvl, XP, XPR, HP, RES, ATK, SPD, LCK, Class, MANA
-    lvl += 1
-    HP += 5
-    RES += 1
-    if lvl % 2 == 0:
-        ATK += 1
-    if Class == "Wizard":
-        MANA += 5
-    XPX = 0
-    if XPR < XP:
-        XPX = XP - XPR
-    XP = 0
-    XPR *= 1.5
-    XPR += XPX
+    global player
+    player.LVL += 1
+    player.HP += 5
+    player.RES += 1
+    if player.LVL % 2 == 0:
+        player.ATK += 1
+    if player.CLASS == "Wizard":
+        player.MANA += 5
+    player.XPX = 0
+    if player.XPR < player.XP:
+        player.XPX = player.XP - player.XPR
+    player.XP = 0
+    player.XPR *= 1.5
+    player.XPR += player.XPX
 
 # [GAME FUNCTIONS]:i uhh idk, fucking geuss
 
@@ -187,7 +200,7 @@ def combat():
         if enemy_attack == 1:
             wait(0.5)
             typewrite("You've been hit...", .05, 1)
-            HP -= 16
+            pHP -= 16
         else:
             wait(0.5)
             typewrite("The enemy missed...", .05, 1)
@@ -203,16 +216,12 @@ def defstructure(setstructure):
         2:"Dungeon",
         3:"Castle"
         }
-    if setstructure > 0 and setstructure < len(structures):
+    if setstructure in structuredic:
         structure = structuredic[setstructure]
     if not setstructure:
-        structure = random.randint
+        structure = random.randint(1, len(structuredic)-1)
     else:
-        print('\033[93m'+"ERROR: {errors[1]}" + '\033[0m')
-    
-
-    
-    
+        print(f'\033[93mERROR: {errors[1]}\033[0m')
     return
 
 # Village: define village structure, 
@@ -232,9 +241,9 @@ wait(1)
 name = randname(0, 10)
 typewrite("Your name will be: ", 0.01, 0);wait(0.5);typewrite(name, 0.5, 1)
 defclass()
-typewrite("Your class will be: ", 0.01, 0);wait(1);typewrite(Class, 0.07, 1)
+typewrite("Your class will be: ", 0.01, 0);wait(1);typewrite(player.CLASS, 0.07, 1)
 defstats()
-defstructure(1000)
+defstructure(1)
 typewrite()
 
 while run:
