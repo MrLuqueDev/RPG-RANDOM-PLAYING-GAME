@@ -1,11 +1,11 @@
-"""
-____________________  ________
-\______   \______   \/  _____/     ______ ___.__.
- |       _/|     ___/   \  ___     \____ <   |  |
- |    |   \|    |   \    \_\  \    |  |_> >___  |
- |____|_  /|____|    \______  / /\ |   __// ____|
-        \/                  \/  \/ |__|   \/     
-"""
+debug = 1
+
+#____________________  ________
+#\______   \______   \/  _____/     ______ ___.__.
+# |       _/|     ___/   \  ___     \____ <   |  |
+# |    |   \|    |   \    \_\  \    |  |_> >___  |
+# |____|_  /|____|    \______  / /\ |   __// ____|
+#        \/                  \/  \/ |__|   \/     
 
 # 3rd Rewrite of the code, DO NOT USE AI. enhanced visually, and also improved the code, like a lot, the last 2 ones were a mess, the second one was way better though... shorter, more controllable and made sure it controls multiple things at once
 
@@ -36,59 +36,72 @@ errors = {
 
 # [VARIABLES]: your mother and i had a great time bullying you as a kid so you could bring this bullshit to life ( my mom is dead...)
 
-debug = 1
 run = True
-name = ""
 structure = ""
 structures = ["Village", "Dungeon", "Castle"] # this little fucker is a rouge us military asset
-enemy = ""
-potions = 0
+class_list = ["Warrior", "Archer", "Wizard"]
 day = True # what the fuck is this?? can't we make a string variable called time and set it to day/night???? fucking idiot whoever did that
+
+# [ENEMY NAMES]: for regular mobs and bosses
+enemy_names = ["Goblin", "Skeleton", "Bandit", "Slime", "Zombie"]
+boss_names = ["suOmal"]
 
 # [CLASSES]: cuando yo la vi
 
 # this fucker will murderer everyone like hitler on ww2
 
 class player:
-    name = name
-    HP = None
-    RES = None
-    ATK = None
-    SPD = None
-    LCK = None
-    MANA = None
-    CLASS = None
-    LVL = None
-    XP = None
-    XPR =None
-
-# in memory of our old 50 lines inventory from the first version :3
-
-class inventory:
+    name = None
+    HP = 100
+    RES = 10
+    ATK = 10
+    SPD = 5
+    LCK = 10
+    CLASS = random.choice(class_list)
+    if CLASS == "Wizard":
+        MANA = 100
+    LVL = 1
+    XP = 0
+    XPR = 100
     keys = 0
     bombs = 0
     coins = 0
-    bag = []
+    inventory = []
+# in memory of our old 50 lines inventory from the first version :3
 
-# [DICTIONARIES]: this fucking stupid, move to a class after we get it working and feel motivated
+# structure classes
 
-village_chest = {
-    "Keys":random.randint(0,1),
-    "Bombs":0,
-    "Coins":random.randint(0,10)
-}
+class enemy:
+    name = None
+    HP = None
+    RES = None
+    ATK = None
+    LCK = None
+    MANA = None
 
-dungeon_chest = {
-    "Keys":random.randint(0,1),
-    "Bombs":random.randint(0,3),
-    "Coins":random.randint(0,25),
-}
+class Village:
+    chest = {
+        "Keys": random.randint(0, 1),
+        "Bombs": 0,
+        "Coins": random.randint(0, 10),
+        "Potion": 0
+    }
 
-castle_chest = {
-    "Keys":random.randint(0,1),
-    "Bombs":random.randint(0,3),
-    "Coins":random.randint(0,25),
-}
+class Dungeon:
+    chest = {
+        "Keys": random.randint(0, 1),
+        "Bombs": random.randint(0, 3),
+        "Coins": random.randint(0, 25),
+        "Potion": random.randint(0, 1)
+    }
+
+class Castle:
+    chest = {
+        "Keys": random.randint(0, 1),
+        "Bombs": random.randint(0, 3),
+        "Coins": random.randint(0, 25),
+        "Potion": random.randint(0, 1)
+    }
 
 # [FUNCTIONS]: saving up space lol :money_mouth:
 
@@ -117,11 +130,11 @@ def typewrite(text, delay, newline):
 def Chest(type, needs_key):
     # FUCK YOU OMAR JAHAAHJASHDJH I MADE YOUR CODE 10 TIMES SHORTER :middle_finger: - hugo
     # kys - jordi
-    global player, structure, inventory, chestdic
+    global player, structure
 
     if needs_key:
-        if inventory.keys > 0:
-            inventory.keys -= 1
+        if player.keys > 0:
+            player.keys -= 1
         else:
             typewrite("You don't have a key to open this chest", 0.01, 1)
     else:
@@ -129,35 +142,53 @@ def Chest(type, needs_key):
         # TODO: add more things like potions, weapons, or other kinds
 
         # Big brain time moment i had in class which probably is actually a fuckign shit 
-        inventory.keys += type["Keys"]
-        inventory.coins += type["Coins"]
-        inventory.bombs += type["Bombs"]
-    
+        if type["Keys"] != 0:
+            player.keys += type["Keys"]
+            print(f"Player got {type["Keys"]} Keys!")
 
-# [PLAYER FUNCTIONS]: ITS LIKE THE THINGS FROM FORTNITE
+        if type["Coins"] != 0:
+            player.coins += type["Coins"]
+            print(f"Player got {type["Coins"]} Coins!")
+        
+        if type["Bombs"] != 0:
+            player.keys += type["Bombs"]
+            print(f"Player got {type["Bombs"]} Bombs!")
+            
+        if type["Potion"] != 0:
+            player.inventory.append("Potion")
+            print(f"Player got {type["Potion"]} Potion!")
 
-# defclass: Im fucking done if you cant guess
-def defclass():
-    global player
-    classes = ["Warrior", "Archer", "Wizard"] # shouldnt this be outside of the function? isn't it a global thing?
-    player.CLASS = random.choice(classes)
+# fucking horrible function but it'll work for now... i hate my life.
 
-# defstats: Fucking. guess. (god im so done)
-def defstats():
-    global player
-    player.HP = 100
-    player.RES = 20
-    player.ATK = 10
-    player.SPD = 5
-    player.LCK = 10
-    if player.CLASS == "Wizard":
-        player.MANA = 100
+def set_chests():
+    Village.chest = {
+        "Keys": random.randint(0, 1),
+        "Bombs": 0,
+        "Coins": random.randint(0, 10),
+        "Potion": 0
+    }
 
+    Dungeon.chest = {
+        "Keys": random.randint(0, 1),
+        "Bombs": random.randint(0, 3),
+        "Coins": random.randint(0, 25),
+        "Potion": random.randint(0, 1)
+    }
+
+    Castle.chest = {
+        "Keys": random.randint(0, 1),
+        "Bombs": random.randint(0, 3),
+        "Coins": random.randint(0, 25),
+        "Potion": random.randint(0, 1)
+    }
+
+# [PLAYER FUNCTIONS]: this fucking sucks i hate my life martha let me see the kids again
+
+# MARTHA LOOK IM LIVING IN AN ISEKAI WHERE EVERY ACTION I DO IS RANDOM THAT MEANS I NEVER GAAMBLED OUR HOUSE ON PURPOSE
 
 # lvlup: How about you go fucking kys before i see you again
 # TODO: levels must always upgrade your hp and resistance, preferably atk too, each x levels other stats will get a level up too
 def lvlup():
-    # holy fucking shit. mindfuckery!
     global player
     player.LVL += 1
     player.HP += 5
@@ -166,13 +197,28 @@ def lvlup():
         player.ATK += 1
     if player.CLASS == "Wizard":
         player.MANA += 5
-    XPX = 0
-    if player.XPR < player.XP:
-        XPX = player.XP - player.XPR
-    player.XP = 0
-    player.XPR *= 1.5
-    player.XPR += XPX
-    # what the fuck does any of this mean bro xpx xpr xp bro this sounds like morse code but more advanced
+    overflow_xp = max(player.XP - player.XPR, 0)
+    player.XP = 0 + overflow_xp
+    player.XPR = player.XPR * 1.5 
+    # what the fuck does any of this mean bro xpx xpr xp bro this sounds like morse code but more advanced - kys
+
+# [ENEMY FUNCTIONS]: | || || |_
+
+def defenemy(lvl):
+    global enemy, enemy_names, boss_names
+    boss = random.randint(1, 10)
+    if boss == 1:
+        enemy.name = random.choice(boss_names)
+        enemy.HP = 200 + (lvl * 15)
+        enemy.ATK = 20 + (lvl * 4)
+        enemy.RES = 10 + (lvl * 2)
+    else:
+        enemy.name = random.choice(enemy_names)
+        enemy.HP = 50 + (lvl * 5)
+        enemy.ATK = 10 + (lvl * 2)
+        enemy.RES = 5 + lvl
+    enemy.LCK = 10
+
 
 
 # [GAME FUNCTIONS]:i uhh idk, fucking geuss ("geuss" lol oh wait i wrote that LMAO)
@@ -180,49 +226,76 @@ def lvlup():
 # combat: is a fuckin' combat dude, it's not even that hard to read the code, it is easy to understand
 # easy to understand my fucking ass bro, and WHAT IN THE FUCK IS THIS WHY IS THERE SO MANY IFS USE THE AND OPERATOR PLEASE I BEG
 def combat():
-    global player
-    enemy_life = 100
-    first_attacking = random.randint(1, 2)
-    attack_type = random.randint(1, 4)
-    enemy_attack = random.randint(1, 2)
-    wait(0.5)
-    typewrite(enemy, .05, 0)
-    typewrite("wants to fight you", .05, 1)
-    if first_attacking == 1:
-        if attack_type == 1:
-            wait(0.5)
-            typewrite("You've done a standart attack!", .05, 1)
-            enemy_life -= 15
-        elif attack_type == 2:
-            wait(0.5)
-            typewrite("THAT WAS A CRITICAL ATTACK", .05, 1)
-            enemy_life -= 34
-        elif attack_type == 4 and potions > 0:
-            wait(0.5)
-            typewrite("You've used a potion", .05, 1)
-            HP += 15
-            typewrite("Your HP: ", .05, 0);typewrite(HP, .05, 1)
-            potions -= 1
-        elif attack_type == 4 and potions <= 0:
-            wait(0.5)
-            typewrite("You don't have potions", .05, 1)
-        else:
-            wait(0.5)
-            typewrite("You've missed...", .05, 1)
+    global player, enemy
+    defenemy(random.randint(1, 5)) # makes an enemy lmfao
+    
+    typewrite(f"A {enemy.name} appeared!", 0.03, 1) # take a very fucking wild guess
+    wait(1)  
+
+    # set the damages
+    player_dmg = max(0, player.ATK - enemy.RES)
+    enemy_dmg = max(0, enemy.ATK - player.RES)
+
+    # combat loop
+    while player.HP >= 0 and enemy.HP >= 0: 
+        
+        wait(1)
+
+        # sets the crit hit
+
+        player_crit = random.random() < (player.LCK / 100)
+        enemy_crit = random.random() < (enemy.LCK / 100)
+        
+        # player deals a critical hit
+
+        if player_crit:
+            player_dmg *= 1.5
+            typewrite(f"{player.name} made a critical hit", 0.01, 0);typewrite("...", 0.07, 1)
+            wait(0.1)
+            typewrite(f"It dealt {player_dmg} points!", 0.03, 1)
+
+        # regular damage
+
+        if not player_crit:
+            typewrite(f"{enemy.name} dealt {enemy_dmg} points!", 0.01, 1)
+
+        # enemy deals a critical hit
+
+        if enemy_crit:
+            enemy_dmg *= 1.5
+            typewrite(f"{enemy.name} made a critical hit", 0.01, 0);typewrite("...", 0.07, 1)
+            wait(0.1)
+            typewrite(f"It dealt {enemy_dmg} points!", 0.03, 1)
+
+        # REGULAR HURTING AN ENEMY BRO :sob:
+
+        if not enemy_crit:
+            typewrite(f"{player.name} dealt {player_dmg} points!", 0.01, 1)
+
+        # deal the damage
+
+        enemy.HP -= player_dmg
+        player.HP -= enemy_dmg
+
+        # heal
+
+        if player.HP < 25:
+            if "Potion" in player.inventory:
+                typewrite(f"{player.name} drank a potion", 0.01, 0);typewrite("...", 0.07, 1)
+                wait(0.1)
+                typewrite(f"It healed X points!", 0.03, 1)
+                # espero que sea esto lo que querias?? ns bro me liao xd
+            
+    if player.HP <= 0:
+        typewrite("you died, skill issue", 0.01, 1)
     else:
-        if enemy_attack == 1:
-            wait(0.5)
-            typewrite("You've been hit...", .05, 1)
-            pHP -= 16
-        else:
-            wait(0.5)
-            typewrite("The enemy missed...", .05, 1)
+        typewrite("you killed Omar!", 0.01, 1)
 
 # [STRUCTURE FUNCTIONS]: brainfuck the sequel
 
 # defstructure: Work around structures (brainfuck, beyond cooked, undertanding this is an ancient art)
 def defstructure(str): 
-    # THY END IS NOW! PREPARE THYSELF! WEAK! CRUSH! 
+    # THY END IS NOW! PREPARE THYSELF! WEAK! CRUSH! DIE!
     global structure, structures
 
     structure = structures[str]
@@ -237,19 +310,23 @@ def defstructure(str):
                 dungeon()
             case "Castle":
                 castle()
+    set_chests()
     return
 
 # fucking lamest comments ever
 
 # Village: define village structure, 
 def village():
-    Chest(village_chest, 0)
+    print(structure)
+    Chest(Village.chest, 0)
 # Dungeon: define dungeon structure,
 def dungeon():
-    Chest(dungeon_chest, 0)
+    print(structure)
+    Chest(Dungeon.chest, 0)
 # Castle: define castle structure,
 def castle():
-    Chest(castle_chest, 0)
+    print(structure)
+    Chest(Castle.chest, 0)
 
 # i'm sure there's a simpler way to do the chest call, but right now i'm at a loss
 
@@ -260,21 +337,21 @@ def castle():
 
 # [MAIN GAME LOOP]: GUESS WHAT THE FUCK THIS DOES!
 
-# [FIXME]: oh god please forgive me for making this HORRIBLE mess but it is the only way i can think of right now to get rid of the fucking annoying intro
-typewrite("-----------------------------------------", 0.01, 1) if not debug else print()
-typewrite("-----------",0.01, 0)if not debug else print();typewrite("WELCOME, TO RPG.PY!",0.1, 0) if not debug else print();typewrite("-----------", 0.01, 1) if not debug else print()
-typewrite("-----------------------------------------", 0.01, 1) if not debug else print()
-wait(1) if not debug else wait(0)
-typewrite("First of all, let's pick your name...", 0.1, 1) if not debug else print()
-wait(1) if not debug else wait(0)
-name = randname(0, 10)
-typewrite("Your name will be: ", 0.01, 0)if not debug else print();wait(0.5)if not debug else wait(0);typewrite(name, 0.5, 1) if not debug else print()
-defclass()
-typewrite("Your class will be: ", 0.01, 0)if not debug else print();wait(1)if not debug else wait(0);typewrite(player.CLASS, 0.07, 1) if not debug else print()
-defstats()
+player.name = randname(0, 10)
 
-while run:
-    defstructure(random.randint(0, (len(structures)-1)))
+if not debug:
+    typewrite("-----------------------------------------", 0.01, 1)
+    typewrite("-----------",0.01, 0);typewrite("WELCOME, TO RPG.PY!",0.1, 0);typewrite("-----------", 0.01, 1)
+    typewrite("-----------------------------------------", 0.01, 1)
     wait(1)
+    typewrite("First of all, let's pick your name...", 0.1, 1)
+    wait(1)
+    typewrite("Your name will be: ", 0.01, 0);wait(0.5);typewrite(player.name, 0.5, 1)
+    typewrite("Your class will be: ", 0.01, 0);wait(1);typewrite(player.CLASS, 0.07, 1)
 
-# [Fourth commit]
+#while run:
+    # defstructure(random.randint(0, (len(structures)-1)))
+    #wait(2)
+combat()
+
+# [Fifth commit]
