@@ -7,16 +7,27 @@ ____________________  ________
         \/                  \/  \/ |__|   \/     
 """
 
-# [TODO]: like, rewrite everything lmfao. okay but like seriously. ("OkAy BuT sErIoUsLy")
-# 3rd Rewrite of the code, DO NOT USE AI. enhance visually, and also improve the code, like a lot, the last 2 ones were a mess, the second one was way better though... (shorter, more controllable (add more controllers to the functions) and make sure it controls multiple things at once)
-# Based on the day, enemies will get stronger, exponentially as well, and based on the level too. (:skull:)
+# 3rd Rewrite of the code, DO NOT USE AI. enhanced visually, and also improved the code, like a lot, the last 2 ones were a mess, the second one was way better though... shorter, more controllable and made sure it controls multiple things at once
 
-
+""" 
+[TODO]: 
+- detail structures 
+- add more structures and types
+- day/night cycle (Based on the day, enemies will get stronger, exponentially as well, and based on the level too. (:skull:)) 
+- shops 
+- redefine combat because SOMEONE IS FUCKING STUPID!!! (im not looking at anyone (omar...)) 
+- optimize a lot of the code stuff but rn its doing great ngl, maybe a bit mroe of order (ultrakill)
+- usage of items
+- add more items to chests
+- Move chest types to class, or turn structures into classes and then add the type of chest inside of it
+"""
 # [IMPORTS]: because, we need stuff...
 import random
 from time import sleep as wait
 
 # [ENGINE VARIABLES AND THINGS]: just fucking die.
+
+# YOU IS A MOTHERFUCKER YOU KNOW THAT
 
 errors = {
     1:"Structure not found",
@@ -25,14 +36,18 @@ errors = {
 
 # [VARIABLES]: your mother and i had a great time bullying you as a kid so you could bring this bullshit to life ( my mom is dead...)
 
+debug = 1
 run = True
 name = ""
 structure = ""
+structures = ["Village", "Dungeon", "Castle"] # this little fucker is a rouge us military asset
 enemy = ""
 potions = 0
-day = True
+day = True # what the fuck is this?? can't we make a string variable called time and set it to day/night???? fucking idiot whoever did that
 
 # [CLASSES]: cuando yo la vi
+
+# this fucker will murderer everyone like hitler on ww2
 
 class player:
     name = name
@@ -47,30 +62,33 @@ class player:
     XP = None
     XPR =None
 
+# in memory of our old 50 lines inventory from the first version :3
+
 class inventory:
     keys = 0
     bombs = 0
     coins = 0
     bag = []
 
-class structures:
-    structure = ""
-    has_chest, has_enemies, chest_type, has_shop = None
-    chest_types = [
-        # coins, keys, bombs
-        [1, 0, 0], # Village chest
-        [1, 1 ,0] # Dungeon chest
-        [1, 1, 1] # Castle chest
-    ]
-    list = [ # random.randint(len(chest_types))
-        # Name, has chest, chest type, has enemies, has shop, 
-        ["Village", has_chest, chest_type, random.randint(0,1), random.randint(0,1)],
-        ["Dungeon", has_chest, chest_type, has_enemies, , random.randint(0,1)],
-        ["Castle", 1, random.randint(len(chest_types)), random.randint(0,1), random.randint(0,1)],
-    ]
+# [DICTIONARIES]: this fucking stupid, move to a class after we get it working and feel motivated
 
-inventory.bombs += 1
+village_chest = {
+    "Keys":random.randint(0,1),
+    "Bombs":0,
+    "Coins":random.randint(0,10)
+}
 
+dungeon_chest = {
+    "Keys":random.randint(0,1),
+    "Bombs":random.randint(0,3),
+    "Coins":random.randint(0,25),
+}
+
+castle_chest = {
+    "Keys":random.randint(0,1),
+    "Bombs":random.randint(0,3),
+    "Coins":random.randint(0,25),
+}
 
 # [FUNCTIONS]: saving up space lol :money_mouth:
 
@@ -95,43 +113,34 @@ def typewrite(text, delay, newline):
         print()  # artificial /n
 
 # [OBJECT FUNCTIONS]: the oiled up machines that make this work
-def chest_content():
-    global coins, bombs, keys, needs_key, structure
-    #This function defines the content of the chests that you find in your journey and adds it to the player's inventory
-    chest_content = random.randint(1, 2)
-    if structure == "Village" and chest_content == 1:
-        wait(0.5)
-        typewrite("You've found a coin!", .05, 1)
-        coins += 1
-    elif structure == "Dungeon" and chest_content == 1:
-        wait(0.5)
-        typewrite("You've found a key!", .05, 1)
-        keys += 1
-    elif structure == "Castle" and chest_content == 1:
-        wait(0.5)
-        typewrite("You've found a bomb!", .05, 1)
-        bombs += 1
-
-    if needs_key == True:
-        wait(0.5)
-        typewrite("You've got a key!", .05, 1)
-        keys += 1
 
 def Chest(type, needs_key):
-    global inventory, structure
+    # FUCK YOU OMAR JAHAAHJASHDJH I MADE YOUR CODE 10 TIMES SHORTER :middle_finger: - hugo
+    # kys - jordi
+    global player, structure, inventory, chestdic
+
+    if needs_key:
+        if inventory.keys > 0:
+            inventory.keys -= 1
+        else:
+            typewrite("You don't have a key to open this chest", 0.01, 1)
+    else:
+        # TODO: add a message with the contents that you found in the chest, and say that you found nothing if you... found... noting....
+        # TODO: add more things like potions, weapons, or other kinds
+
+        # Big brain time moment i had in class which probably is actually a fuckign shit 
+        inventory.keys += type["Keys"]
+        inventory.coins += type["Coins"]
+        inventory.bombs += type["Bombs"]
+    
 
 # [PLAYER FUNCTIONS]: ITS LIKE THE THINGS FROM FORTNITE
 
 # defclass: Im fucking done if you cant guess
 def defclass():
     global player
-    randclass = random.randint(1,3)
-    if randclass == 1:
-        player.CLASS = "Warrior"
-    elif randclass == 2:
-        player.CLASS = "Archer"
-    else: 
-        player.CLASS = "Wizard"
+    classes = ["Warrior", "Archer", "Wizard"] # shouldnt this be outside of the function? isn't it a global thing?
+    player.CLASS = random.choice(classes)
 
 # defstats: Fucking. guess. (god im so done)
 def defstats():
@@ -148,6 +157,7 @@ def defstats():
 # lvlup: How about you go fucking kys before i see you again
 # TODO: levels must always upgrade your hp and resistance, preferably atk too, each x levels other stats will get a level up too
 def lvlup():
+    # holy fucking shit. mindfuckery!
     global player
     player.LVL += 1
     player.HP += 5
@@ -156,18 +166,21 @@ def lvlup():
         player.ATK += 1
     if player.CLASS == "Wizard":
         player.MANA += 5
-    player.XPX = 0
+    XPX = 0
     if player.XPR < player.XP:
-        player.XPX = player.XP - player.XPR
+        XPX = player.XP - player.XPR
     player.XP = 0
     player.XPR *= 1.5
-    player.XPR += player.XPX
+    player.XPR += XPX
+    # what the fuck does any of this mean bro xpx xpr xp bro this sounds like morse code but more advanced
 
-# [GAME FUNCTIONS]:i uhh idk, fucking geuss
+
+# [GAME FUNCTIONS]:i uhh idk, fucking geuss ("geuss" lol oh wait i wrote that LMAO)
 
 # combat: is a fuckin' combat dude, it's not even that hard to read the code, it is easy to understand
+# easy to understand my fucking ass bro, and WHAT IN THE FUCK IS THIS WHY IS THERE SO MANY IFS USE THE AND OPERATOR PLEASE I BEG
 def combat():
-    global enemy, potions
+    global player
     enemy_life = 100
     first_attacking = random.randint(1, 2)
     attack_type = random.randint(1, 4)
@@ -208,46 +221,60 @@ def combat():
 # [STRUCTURE FUNCTIONS]: brainfuck the sequel
 
 # defstructure: Work around structures (brainfuck, beyond cooked, undertanding this is an ancient art)
-def defstructure(setstructure): 
-    # SETSTRUCTURE: 0 = random, any other variable will be a set structture (read dictionary below)
-    global structure
-    structuredic = {
-        1:"Village",
-        2:"Dungeon",
-        3:"Castle"
-        }
-    if setstructure in structuredic:
-        structure = structuredic[setstructure]
-    if not setstructure:
-        structure = random.randint(1, len(structuredic)-1)
-    else:
+def defstructure(str): 
+    # THY END IS NOW! PREPARE THYSELF! WEAK! CRUSH! 
+    global structure, structures
+
+    structure = structures[str]
+    if not structure:
         print(f'\033[93mERROR: {errors[1]}\033[0m')
+    else:
+        # nasty ugly fuckface annoying i hate this i fucking hate it
+        match(structure):
+            case "Village":
+                village()
+            case "Dungeon":
+                dungeon()
+            case "Castle":
+                castle()
     return
+
+# fucking lamest comments ever
 
 # Village: define village structure, 
 def village():
-    
-    chest_content()
+    Chest(village_chest, 0)
+# Dungeon: define dungeon structure,
+def dungeon():
+    Chest(dungeon_chest, 0)
+# Castle: define castle structure,
+def castle():
+    Chest(castle_chest, 0)
+
+# i'm sure there's a simpler way to do the chest call, but right now i'm at a loss
+
+"""
+ |   | |
+| |  | _
+"""
 
 # [MAIN GAME LOOP]: GUESS WHAT THE FUCK THIS DOES!
 
-typewrite("-----------------------------------------", 0.01, 1)
-typewrite("-----------",0.01, 0);typewrite("WELCOME, TO RPG.PY!",0.1, 0);typewrite("-----------", 0.01, 1)
-typewrite("-----------------------------------------", 0.01, 1)
-print()
-wait(1)
-typewrite("First of all, let's pick your name...", 0.1, 1)
-wait(1)
+# [FIXME]: oh god please forgive me for making this HORRIBLE mess but it is the only way i can think of right now to get rid of the fucking annoying intro
+typewrite("-----------------------------------------", 0.01, 1) if not debug else print()
+typewrite("-----------",0.01, 0)if not debug else print();typewrite("WELCOME, TO RPG.PY!",0.1, 0) if not debug else print();typewrite("-----------", 0.01, 1) if not debug else print()
+typewrite("-----------------------------------------", 0.01, 1) if not debug else print()
+wait(1) if not debug else wait(0)
+typewrite("First of all, let's pick your name...", 0.1, 1) if not debug else print()
+wait(1) if not debug else wait(0)
 name = randname(0, 10)
-typewrite("Your name will be: ", 0.01, 0);wait(0.5);typewrite(name, 0.5, 1)
+typewrite("Your name will be: ", 0.01, 0)if not debug else print();wait(0.5)if not debug else wait(0);typewrite(name, 0.5, 1) if not debug else print()
 defclass()
-typewrite("Your class will be: ", 0.01, 0);wait(1);typewrite(player.CLASS, 0.07, 1)
+typewrite("Your class will be: ", 0.01, 0)if not debug else print();wait(1)if not debug else wait(0);typewrite(player.CLASS, 0.07, 1) if not debug else print()
 defstats()
-defstructure(1)
-typewrite()
 
 while run:
-    defstructure(0, 0)
-    
+    defstructure(random.randint(0, (len(structures)-1)))
+    wait(1)
 
-# [Third commit]
+# [Fourth commit]
