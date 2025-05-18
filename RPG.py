@@ -13,9 +13,9 @@ debug = 1
 [TODO]: 
 - detail structures 
 - add more structures and types
-- day/night cycle (Based on the day, enemies will get stronger, exponentially as well, and based on the level too. (:skull:)) 
+- day/night cycle (Based on the day, enemies will get stronger, exponentially as well, (enemy leevel done) (:skull:)) 
 - shops 
-- redefine combat because SOMEONE IS FUCKING STUPID!!! (im not looking at anyone (omar...)) 
+- done! (combat)
 - optimize a lot of the code stuff but rn its doing great ngl, maybe a bit mroe of order (ultrakill)
 - usage of items
 - add more items to chests
@@ -24,6 +24,7 @@ debug = 1
 # [IMPORTS]: because, we need stuff...
 import random
 from time import sleep as wait
+import os
 
 # [ENGINE VARIABLES AND THINGS]: just fucking die.
 
@@ -39,12 +40,12 @@ errors = {
 run = True
 structure = ""
 structures = ["Village", "Dungeon", "Castle"] # this little fucker is a rouge us military asset
-class_list = ["Warrior", "Archer", "Wizard"]
+class_list = ["Warrior", "Archer", "Wizard"] # so sad we need to do this
 day = True # what the fuck is this?? can't we make a string variable called time and set it to day/night???? fucking idiot whoever did that
 
 # [ENEMY NAMES]: for regular mobs and bosses
 enemy_names = ["Goblin", "Skeleton", "Bandit", "Slime", "Zombie"]
-boss_names = ["suOmal"]
+boss_names = ["suOmal", "EMO"]
 
 # [CLASSES]: cuando yo la vi
 
@@ -103,6 +104,15 @@ class Castle:
         "Potion": random.randint(0, 1)
     }
 
+# [DICTIONARIES]: This is this because i say so fckin betch :( | || || |_
+    
+pot_dic = {
+    "Potion1":10,
+    "Potion2":25,
+    "Potion3":50,
+    "Potion4":75
+}
+
 # [FUNCTIONS]: saving up space lol :money_mouth:
 
 # RANDNAME: creates a randomly generated name :3, this one goes for you, 5 year old kids that call yourselves "Xx_epicgamingmaster446_xX"
@@ -116,6 +126,9 @@ def randname(min, max):
 
 # WAIT: completely useless function actually, but saves bytes instead of typing time.sleep everytime (:nerd:)
 
+def clear():
+    os.system("cls" if os.name == "nt" else "clear")
+
 # typewrite: Enhanced version of print, but more Fancy :3, (kys)
 def typewrite(text, delay, newline):
     # text is the text you want to write, delay is measured in seconds and is the time it takes to write the next letter, newline decides if it should continue the text AFTER or IN THE NEXT line
@@ -124,6 +137,7 @@ def typewrite(text, delay, newline):
         wait(delay)
     if newline: # this is supposed to be a boolean, but for some reason you can use 1 and 0 so uhh yeah use that instead!
         print()  # artificial /n
+
 
 # [OBJECT FUNCTIONS]: the oiled up machines that make this work
 
@@ -137,8 +151,9 @@ def Chest(type, needs_key):
             player.keys -= 1
         else:
             typewrite("You don't have a key to open this chest", 0.01, 1)
+            wait(1);clear()
     else:
-        # TODO: add a message with the contents that you found in the chest, and say that you found nothing if you... found... noting....
+        # TODO: add a message with the contents that you found in the chest, and say that you found nothing if you... found... nothing....
         # TODO: add more things like potions, weapons, or other kinds
 
         # Big brain time moment i had in class which probably is actually a fuckign shit 
@@ -155,8 +170,9 @@ def Chest(type, needs_key):
             print(f"Player got {type["Bombs"]} Bombs!")
             
         if type["Potion"] != 0:
-            player.inventory.append("Potion")
-            print(f"Player got {type["Potion"]} Potion!")
+            rndpot = random.randint(1,4)
+            player.inventory.append(("Potion" + str(rndpot)))
+            print(f"Player got a tier {type["Potion"]} Potion!")
 
 # fucking horrible function but it'll work for now... i hate my life.
 
@@ -215,10 +231,9 @@ def defenemy(lvl):
     else:
         enemy.name = random.choice(enemy_names)
         enemy.HP = 50 + (lvl * 5)
-        enemy.ATK = 10 + (lvl * 2)
+        enemy.ATK = 10 + lvl
         enemy.RES = 5 + lvl
     enemy.LCK = 10
-
 
 
 # [GAME FUNCTIONS]:i uhh idk, fucking geuss ("geuss" lol oh wait i wrote that LMAO)
@@ -226,11 +241,18 @@ def defenemy(lvl):
 # combat: is a fuckin' combat dude, it's not even that hard to read the code, it is easy to understand
 # easy to understand my fucking ass bro, and WHAT IN THE FUCK IS THIS WHY IS THERE SO MANY IFS USE THE AND OPERATOR PLEASE I BEG
 def combat():
-    global player, enemy
-    defenemy(random.randint(1, 5)) # makes an enemy lmfao
+    global player, enemy, structure, run
+    if structure == "Village":
+        lvl = random.randint(1, 3)
+    elif structure == "Dungeon":
+        lvl = random.randint(2, 4)
+    elif structure == "Castle":
+        lvl = random.randint(3, 5)
+
+    defenemy(lvl) # creates an enemy
     
-    typewrite(f"A {enemy.name} appeared!", 0.03, 1) # take a very fucking wild guess
-    wait(1)  
+    typewrite(f"A {enemy.name} appeared!", 0.1, 1) # take a very fucking wild guess
+    wait(1);clear()
 
     # set the damages
     player_dmg = max(0, player.ATK - enemy.RES)
@@ -250,46 +272,64 @@ def combat():
 
         if player_crit:
             player_dmg *= 1.5
-            typewrite(f"{player.name} made a critical hit", 0.01, 0);typewrite("...", 0.07, 1)
+            typewrite(f"{player.name} made a critical hit", 0.05, 0);typewrite("...", 0.07, 1)
             wait(0.1)
-            typewrite(f"It dealt {player_dmg} points!", 0.03, 1)
+            typewrite(f"{player.name} dealt {player_dmg} DMG!", 0.05, 1) 
 
         # regular damage
 
         if not player_crit:
-            typewrite(f"{enemy.name} dealt {enemy_dmg} points!", 0.01, 1)
+            typewrite(f"{player.name} dealt {player_dmg} DMG!", 0.05, 1)
 
         # enemy deals a critical hit
 
         if enemy_crit:
             enemy_dmg *= 1.5
-            typewrite(f"{enemy.name} made a critical hit", 0.01, 0);typewrite("...", 0.07, 1)
+            typewrite(f"{enemy.name} made a critical hit", 0.05, 0);typewrite("...", 0.07, 1)
             wait(0.1)
-            typewrite(f"It dealt {enemy_dmg} points!", 0.03, 1)
+            typewrite(f"{enemy.name} dealt {enemy_dmg} DMG!", 0.05, 1)
 
         # REGULAR HURTING AN ENEMY BRO :sob:
 
         if not enemy_crit:
-            typewrite(f"{player.name} dealt {player_dmg} points!", 0.01, 1)
+            typewrite(f"{enemy.name} dealt {enemy_dmg} DMG!", 0.05, 1)
 
         # deal the damage
 
         enemy.HP -= player_dmg
         player.HP -= enemy_dmg
 
+        # reseting crits
+
+        if player_crit:
+            player_dmg /= 1.5
+        if enemy_crit:
+            enemy_dmg /= 1.5
+        
+        player_crit = False
+        enemy_crit = False
+
         # heal
 
         if player.HP < 25:
-            if "Potion" in player.inventory:
-                typewrite(f"{player.name} drank a potion", 0.01, 0);typewrite("...", 0.07, 1)
-                wait(0.1)
-                typewrite(f"It healed X points!", 0.03, 1)
+            for item in player.inventory:
+                if item.startswith("Potion"):
+                    player.inventory.remove(item)
+                    typewrite(f"{player.name} drank a potion", 0.05, 0)
+                    typewrite("...", 0.07, 1)
+                    wait(0.1)
+                    typewrite(f"It healed {pot_dic[item]} HP!", 0.1, 1)
+                    player.HP += pot_dic[item]
+                    break
                 # espero que sea esto lo que querias?? ns bro me liao xd
+        
+        wait(1);clear()
             
     if player.HP <= 0:
-        typewrite("you died, skill issue", 0.01, 1)
+        typewrite("you died, skill issue", 0.05, 1)
+        run = False
     else:
-        typewrite("you killed Omar!", 0.01, 1)
+        typewrite(f"you killed {enemy.name}!", 0.05, 1)
 
 # [STRUCTURE FUNCTIONS]: brainfuck the sequel
 
@@ -348,10 +388,13 @@ if not debug:
     wait(1)
     typewrite("Your name will be: ", 0.01, 0);wait(0.5);typewrite(player.name, 0.5, 1)
     typewrite("Your class will be: ", 0.01, 0);wait(1);typewrite(player.CLASS, 0.07, 1)
+    wait(1);clear()
 
-#while run:
-    # defstructure(random.randint(0, (len(structures)-1)))
-    #wait(2)
-combat()
+while run:
+    defstructure(random.randint(0, (len(structures)-1)))
+    wait(2)
+    combat()
+    if not run:
+        break
 
-# [Fifth commit]
+# [jaCinco commit] kys
