@@ -3,3 +3,4 @@ but at the same time, That's ALSO a requirement, so you would also need to insta
 so here is a list of the requirements you need for the program to run on your computer:
 - time (preinstalled, but just for in case: pip install time)
 - random (preinstalled, but just for in case: pip install random)
+- os (preinstalled, but just for in case: pip install random)
