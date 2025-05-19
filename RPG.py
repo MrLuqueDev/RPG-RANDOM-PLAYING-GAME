@@ -19,7 +19,8 @@ debug = 1
 - optimize a lot of the code stuff but rn its doing great ngl, maybe a bit mroe of order (ultrakill)
 - usage of items
 - add more items to chests
-- Move chest types to class, or turn structures into classes and then add the type of chest inside of it
+- done! (single structure class)
+- Fun names
 """
 # [IMPORTS]: because, we need stuff...
 import random
@@ -45,9 +46,9 @@ day = True # what the fuck is this?? can't we make a string variable called time
 
 # [ENEMY NAMES]: for regular mobs and bosses
 enemy_names = ["Goblin", "Skeleton", "Bandit", "Slime", "Zombie"]
-boss_names = ["suOmal", "EMO"]
+boss_names = ["suOmal", "EMO", "JordiTroll_777", "SexOffender", "Xx_Francés_xX"] # me cago en vuestros muertos
 
-# [CLASSES]: cuando yo la vi
+# [CLASSES]: cuando yo la vi 
 
 # this fucker will murderer everyone like hitler on ww2
 
@@ -70,8 +71,6 @@ class player:
     inventory = []
 # in memory of our old 50 lines inventory from the first version :3
 
-# structure classes
-
 class enemy:
     name = None
     HP = None
@@ -80,24 +79,23 @@ class enemy:
     LCK = None
     MANA = None
 
-class Village:
-    chest = {
+class Structure:
+
+    village_chest = {
         "Keys": random.randint(0, 1),
         "Bombs": 0,
         "Coins": random.randint(0, 10),
         "Potion": 0
     }
 
-class Dungeon:
-    chest = {
+    dungeon_chest = {
         "Keys": random.randint(0, 1),
         "Bombs": random.randint(0, 3),
         "Coins": random.randint(0, 25),
         "Potion": random.randint(0, 1)
     }
 
-class Castle:
-    chest = {
+    castle_chest = {
         "Keys": random.randint(0, 1),
         "Bombs": random.randint(0, 3),
         "Coins": random.randint(0, 25),
@@ -177,21 +175,21 @@ def Chest(type, needs_key):
 # fucking horrible function but it'll work for now... i hate my life.
 
 def set_chests():
-    Village.chest = {
+    Structure.village_chest = {
         "Keys": random.randint(0, 1),
         "Bombs": 0,
         "Coins": random.randint(0, 10),
         "Potion": 0
     }
 
-    Dungeon.chest = {
+    Structure.dungeon_chest = {
         "Keys": random.randint(0, 1),
         "Bombs": random.randint(0, 3),
         "Coins": random.randint(0, 25),
         "Potion": random.randint(0, 1)
     }
 
-    Castle.chest = {
+    Structure.castle_chest = {
         "Keys": random.randint(0, 1),
         "Bombs": random.randint(0, 3),
         "Coins": random.randint(0, 25),
@@ -358,15 +356,15 @@ def defstructure(str):
 # Village: define village structure, 
 def village():
     print(structure)
-    Chest(Village.chest, 0)
+    Chest(Structure.village_chest, 0)
 # Dungeon: define dungeon structure,
 def dungeon():
     print(structure)
-    Chest(Dungeon.chest, 0)
+    Chest(Structure.dungeon_chest, 0)
 # Castle: define castle structure,
 def castle():
     print(structure)
-    Chest(Castle.chest, 0)
+    Chest(Structure.castle_chest, 0)
 
 # i'm sure there's a simpler way to do the chest call, but right now i'm at a loss
 
