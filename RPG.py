@@ -157,20 +157,20 @@ def Chest(type, needs_key):
         # Big brain time moment i had in class which probably is actually a fuckign shit 
         if type["Keys"] != 0:
             player.keys += type["Keys"]
-            print(f"Player got {type["Keys"]} Keys!")
+            typewrite(f"Player got {type["Keys"]} Keys!", 0.1, 1)
 
         if type["Coins"] != 0:
             player.coins += type["Coins"]
-            print(f"Player got {type["Coins"]} Coins!")
+            typewrite(f"Player got {type["Coins"]} Coins!", 0.1, 1)
         
         if type["Bombs"] != 0:
             player.keys += type["Bombs"]
-            print(f"Player got {type["Bombs"]} Bombs!")
+            typewrite(f"Player got {type["Bombs"]} Bombs!", 0.1, 1)
             
         if type["Potion"] != 0:
             rndpot = random.randint(1,4)
             player.inventory.append(("Potion" + str(rndpot)))
-            print(f"Player got a tier {type["Potion"]} Potion!")
+            typewrite(f"Player got a tier {type["Potion"]} Potion!", 0.1, 1)
 
 # fucking horrible function but it'll work for now... i hate my life.
 
@@ -241,16 +241,23 @@ def defenemy(lvl):
 def combat():
     global player, enemy, structure, run
     if structure == "Village":
-        lvl = random.randint(1, 3)
+        elvl = random.randint(1, 3)
     elif structure == "Dungeon":
-        lvl = random.randint(2, 4)
+        elvl = random.randint(2, 4)
     elif structure == "Castle":
-        lvl = random.randint(3, 5)
+        elvl = random.randint(3, 5)
 
-    defenemy(lvl) # creates an enemy
+    defenemy(elvl) # creates an enemy
+
+    clear()
     
     typewrite(f"A {enemy.name} appeared!", 0.1, 1) # take a very fucking wild guess
     wait(1);clear()
+    typewrite(f"Enemy stats:", 0.1, 1)
+    typewrite(f"HP: {enemy.HP}", 0.1, 1)
+    typewrite(f"ATK: {enemy.ATK}", 0.1, 1)
+    typewrite(f"RES: {enemy.RES}", 0.1, 1)
+    wait(1.5);clear()
 
     # set the damages
     player_dmg = max(0, player.ATK - enemy.RES)
@@ -321,13 +328,17 @@ def combat():
                     break
                 # espero que sea esto lo que querias?? ns bro me liao xd
         
-        wait(1);clear()
+        wait(1.5);clear()
             
     if player.HP <= 0:
-        typewrite("you died, skill issue", 0.05, 1)
+        typewrite("you died, skill issue", 0.1, 1)
+        typewrite(f"You got to lvl {player.LVL}", 0.1, 1)
         run = False
     else:
-        typewrite(f"you killed {enemy.name}!", 0.05, 1)
+        typewrite(f"you killed {enemy.name}!", 0.1, 1) # the XP var is to print the value of the xp gained. -jlf
+        XP = 10 + (elvl * 5)
+        typewrite(f"You earned {XP} XP!", 0.1, 1)
+        player.XP += XP
 
 # [STRUCTURE FUNCTIONS]: brainfuck the sequel
 
@@ -351,19 +362,19 @@ def defstructure(str):
     set_chests()
     return
 
-# fucking lamest comments ever
+# fucking lamest comments ever, no shit sherlock
 
 # Village: define village structure, 
 def village():
-    print(structure)
+    typewrite(structure, 0.1, 1)
     Chest(Structure.village_chest, 0)
 # Dungeon: define dungeon structure,
 def dungeon():
-    print(structure)
+    typewrite(structure, 0.1, 1)
     Chest(Structure.dungeon_chest, 0)
 # Castle: define castle structure,
 def castle():
-    print(structure)
+    typewrite(structure, 0.1, 1)
     Chest(Structure.castle_chest, 0)
 
 # i'm sure there's a simpler way to do the chest call, but right now i'm at a loss
@@ -392,6 +403,8 @@ while run:
     defstructure(random.randint(0, (len(structures)-1)))
     wait(2)
     combat()
+    if player.XP > player.XPR:  # triggers lvlup
+        lvlup()
     if not run:
         break
 
