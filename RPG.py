@@ -135,7 +135,14 @@ def typewrite(text, delay, newline):
         wait(delay)
     if newline: # this is supposed to be a boolean, but for some reason you can use 1 and 0 so uhh yeah use that instead! -frit after realizing 0 and 1 are boolean values
         print()  # artificial /n
-
+        
+# FUNnames: Goofy ahh efects when a specific name is entered :3
+def FUNnames(name):
+    global debug    # in case a special name allows debug like... idk... "Admin"?
+    clear()
+    match(name):
+        case "hugo":
+            return
 
 # [OBJECT FUNCTIONS]: Mind torture for those who sinned in the dark ages, however we did not sin, we're just sadomasochistic programmers in search of killing boredom! -frit
 
@@ -417,22 +424,34 @@ def castle():
 
 # [MAIN GAME LOOP]: GUESS WHAT THE FUCK THIS DOES! -frit
 
-player.name = randname(0, 10)
-clear()
 if not debug:
     typewrite("-----------------------------------------", 0.01, 1)
     typewrite("-----------",0.01, 0);typewrite("WELCOME, TO RPG.PY!",0.1, 0);typewrite("-----------", 0.01, 1)
     typewrite("-----------------------------------------", 0.01, 1)
+
     wait(1)
+
     typewrite("First of all, let's pick your name...", 0.1, 1)
     wait(1)
-    typewrite("Your name will be: ", 0.01, 0);wait(0.5);typewrite(player.name, 0.5, 1)
-    typewrite("Your class will be: ", 0.01, 0);wait(1);typewrite(player.CLASS, 0.07, 1)
+    
+    typewrite("do you want a random name (0) or your own (1): ", 0.1, 0)
+    q = int(input(""))
+    wait(0.5);clear()
+
+    if q == 0:
+        player.name = randname(0, 10)
+    elif q == 1:
+        typewrite("choose your name: ", 0.1, 0)
+        player.name = input("")
+        FUNnames(player.name)
+    
+    typewrite("Your name is: ", 0.02, 0);wait(0.5);typewrite(f"{player.name}", 0.5, 1)
+    typewrite("Your class is: ", 0.02, 0);wait(1);typewrite(f"{player.CLASS}", 0.1, 1)
     wait(1);clear()
 
 while run:
     defstructure(random.randint(0, (len(structures)-1)))
-    wait(1)
+    wait(2)
     combat()
     if player.XP > player.XPR:  # triggers lvlup
         lvlup()
