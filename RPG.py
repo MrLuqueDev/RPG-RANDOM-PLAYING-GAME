@@ -1,4 +1,4 @@
-debug = 0
+debug = 1
 
 #____________________  ________
 #\______   \______   \/  _____/     ______ ___.__.
@@ -101,6 +101,15 @@ pot_dic = {
     "Potion2":25,
     "Potion3":50,
     "Potion4":75
+}
+
+prices = {
+    "Keys": 5,
+    "Bombs": 7, 
+    "Potion1": 3,
+    "Potion2": 5,
+    "Potion3": 7, 
+    "Potion4": 10
 }
 
 # [FUNCTIONS]: WARNING!!! THIS SHIT WILL DRIVE YOU INSANE!! -frit
@@ -262,6 +271,34 @@ def defenemy(lvl):
 
 
 # [GAME FUNCTIONS]: functions that are used ingame, as in actions or things that the player directly does -frit
+
+
+
+# TODO: add prices and be able to buy stuff and add a delay on some prints
+def shop():
+    global player, prices
+    clear()
+    typewrite(f"There appears to be a shop in here, ", 0.02, 0);wait(0.5);typewrite(f"You decided to step in.", 0.02, 1)
+    merch = ["Keys", "Bombs", ("Potion" + str(random.randint(1,4)))]
+    selling = []
+    for i in range(3):
+        selling.append(merch[random.randint(0,(len(merch)-1))])
+    typewrite(f"There are 3 items on sale:", 0.02, 1)
+    typewrite(f"1) {selling[0]}", 0.02, 1)
+    typewrite(f"2) {selling[1]}", 0.02, 1)
+    typewrite(f"3) {selling[2]}", 0.02, 1)
+    typewrite(f"Coins: {player.coins}", 0.02, 1)
+
+    typewrite(f"Will you buy something? (1-3)Items, 0)No", 0.02, 1)
+    a = int(input())
+    if not a:
+        typewrite(f"You left the shop emptyhanded", 0.02, 0)
+        return
+    else:
+        typewrite(f"You bought {selling[a - 1]}", 0.02, 0)
+        player.coins -= prices[selling[a - 1]]
+        player.inventory.append(selling[a - 1])
+
 
 # combat: is a fuckin' combat dude, it's not even that hard to read the code, it is easy to understand -omar
 # omar you did not even fucking write the new combat get your comment out of here please :sob: -frit
@@ -461,10 +498,12 @@ if not debug:
 while run:
     defstructure(random.randint(0, (len(structures)-1)))
     wait(1)
-    combat()
+    shop()
+    if random.randint(0,4) == 4:
+        combat()
     if player.XP > player.XPR:  # triggers lvlup
         lvlup()
     if not run:
         break
 
-# [jaCinco commit] kys
+# [Seventh commit] (not real anymore idk why i keep updating this)
