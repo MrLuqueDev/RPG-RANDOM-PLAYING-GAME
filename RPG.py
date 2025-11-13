@@ -10,11 +10,11 @@ debug = 1
 # 3rd Rewrite of the code, DO NOT USE AI. enhanced visually, and also improved the code, like a lot, the last 2 ones were a mess, the second one was way better though... shorter, more controllable and made sure it controls multiple things at once
 # Most of this was done in live share so uhh when you see someone did a commit it's probably fake and someone else did more than the one who made a commit
 
-""" 
+"""
 [TODO]: 
 - detail structures 
 - add more structures and types
-- day/night cycle (Based on the day, enemies will get stronger, exponentially as well, (enemy leevel done) (:skull:)) 
+- day/night cycle (Based on the day, enemies will get stronger, exponentially as well, (enemy level done) (:skull:)) 
 - shops 
 - usage of items FIXME:(i mean sorta done? there's no other items to use but keys and potions and those get used, discuss this later)
 - add more items to chests
@@ -31,7 +31,8 @@ run = True
 structure = ""
 structures = ["Village", "Dungeon", "Castle"] # why -frit
 class_list = ["Warrior", "Archer", "Wizard"] # so sad we need to do this -jlf
-time = "Day" # FIXME
+cycle = 0 # on it :sob: -jlf
+current_time = 0
 
 # [ENEMY NAMES]: for regular mobs and bosses -jlf
 enemy_names = ["Goblin", "Skeleton", "Bandit", "Slime", "Zombie"]
@@ -110,6 +111,13 @@ prices = {
     "Potion2": 5,
     "Potion3": 7, 
     "Potion4": 10
+}
+
+time = {
+    0: "morning",
+    1: "afternoon",
+    2: "evening",
+    3: "night",
 }
 
 # [FUNCTIONS]: WARNING!!! THIS SHIT WILL DRIVE YOU INSANE!! -frit
@@ -272,7 +280,9 @@ def defenemy(lvl):
 
 # [GAME FUNCTIONS]: functions that are used ingame, as in actions or things that the player directly does -frit
 
-
+# finally doing something -jlf
+def daycycle(cycle):
+    return (cycle + 1) % 4
 
 # TODO: add prices and be able to buy stuff and add a delay on some prints
 def shop():
@@ -501,9 +511,10 @@ while run:
     shop()
     if random.randint(0,4) == 4:
         combat()
+        current_time = cycle[daycycle[time]]
     if player.XP > player.XPR:  # triggers lvlup
         lvlup()
     if not run:
         break
 
-# [Seventh commit] (not real anymore idk why i keep updating this)
+# [Eight commit???????????????????????????????????????????????]
