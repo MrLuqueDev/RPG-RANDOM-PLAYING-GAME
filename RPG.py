@@ -96,6 +96,20 @@ class Structure:
         "Potion": random.randint(0, 1)
     }
 
+    temple_chest = {
+        "Keys": 0,
+        "Bombs": random.randint(0, 3),
+        "Coins": random.randint(10, 30),
+        "Potion": 1
+    }
+
+    mine_chest = {
+        "Keys": random.randint(1, 3),
+        "Bombs": random.randint(0, 2),
+        "Coins": random.randint(0, 10),
+        "Potion": 0
+    }
+    
 # [DICTIONARIES]: This is bad but i don't care anymore -frit
     
 pot_dic = {
@@ -257,6 +271,20 @@ def set_chests():
         "Bombs": random.randint(0, 3),
         "Coins": random.randint(0, 25),
         "Potion": random.randint(0, 1)
+    }
+
+    Structure.temple_chest = {
+        "Keys": 0,
+        "Bombs": random.randint(0, 3),
+        "Coins": random.randint(10, 30),
+        "Potion": 1
+    }
+
+    Structure.mine_chest = {
+        "Keys": random.randint(1, 3),
+        "Bombs": random.randint(0, 2),
+        "Coins": random.randint(0, 10),
+        "Potion": 0
     }
 
 # [PLAYER FUNCTIONS]: this fucking sucks i hate my life martha let me see the kids again -jeremiah
@@ -483,6 +511,10 @@ def defstructure(str):
             dungeon()
         case "Castle":
             castle()
+        case "Temple":
+            temple()
+        case "Mine":
+            mine()
     set_chests()
     return
 
@@ -506,6 +538,18 @@ def castle():
     wait(1)
     clear()
     Chest(Structure.castle_chest, random.randint(0,1))
+# Temple: guess :3 -jlf
+def temple():
+    typewrite(structure, 0.1, 1)
+    wait(1)
+    clear()
+    Chest(Structure.temple_chest, 1)
+# Mine: are comments here even needed? -jlf
+def mine():
+    typewrite(structure, 0.1, 1)
+    wait(1)
+    clear()
+    Chest(Structure.mine_chest, random.randint(0,1))
 
 # i'm sure there's a simpler way to do the chest call, but right now i'm at a loss -frit
 
@@ -562,4 +606,4 @@ while run:
         lvlup()
 
 
-# [I hate my life]
+# [sybau emo]
