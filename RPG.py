@@ -339,13 +339,13 @@ def shop():
             selling[a - 1] = "Bought"
             clear()
         typewrite(f"These are the items on sale:", 0.02, 1)
-        typewrite(f"1) {selling[0]}", 0.02, 1 if selling[0] == "Bought" else 0)
+        typewrite(f"1) {selling[0]}", 0.02, 0 if selling[0] != "Bought" else 1)
         if selling[0] != "Bought":
             typewrite(f", costs: #{prices[selling[0]]}#", 0.02, 1) if prices[selling[0]] <= player.coins else typewrite(f", costs: *{prices[selling[0]]}*", 0.02, 1)
-        typewrite(f"2) {selling[1]}", 0.02, 1 if selling[0] == "Bought" else 0)
+        typewrite(f"2) {selling[1]}", 0.02, 0 if selling[1] != "Bought" else 1)
         if selling[1] != "Bought":
             typewrite(f", costs: #{prices[selling[1]]}#", 0.02, 1) if prices[selling[1]] <= player.coins else typewrite(f", costs: *{prices[selling[1]]}*", 0.02, 1)
-        typewrite(f"3) {selling[2]}", 0.02, 1 if selling[0] == "Bought" else 0)
+        typewrite(f"3) {selling[2]}", 0.02, 0 if selling[2] != "Bought" else 1)
         if selling[2] != "Bought":
             typewrite(f", costs: #{prices[selling[2]]}#", 0.02, 1) if prices[selling[2]] <= player.coins else typewrite(f", costs: *{prices[selling[2]]}*", 0.02, 1)
         print()
@@ -562,4 +562,4 @@ while run:
         lvlup()
 
 
-# [I NEED MORE IRON BLOCKS!!!!]
+# [I hate my life]
