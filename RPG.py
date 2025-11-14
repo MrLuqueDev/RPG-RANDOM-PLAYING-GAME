@@ -30,7 +30,7 @@ import math
 
 run = True
 structure = ""
-structures = ["Village", "Dungeon", "Castle"] # why -frit
+structures = ["Village", "Dungeon", "Castle", "Temple", "Mine"] # why -frit
 class_list = ["Warrior", "Archer", "Wizard"] # so sad we need to do this -jlf
 cycle = 0 # on it :sob: -jlf
 current_time = 0
