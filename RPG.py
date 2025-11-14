@@ -24,6 +24,7 @@ debug = 1
 import random
 from time import sleep as wait
 import os
+import math
 
 # [VARIABLES]: shit that makes the rest of the code work
 
@@ -143,9 +144,25 @@ def clear():
 # typewrite: prints the letters like undertale dialogues (wow so retro) -frit
 def typewrite(text, delay, newline):
     # text is the text you want to write, delay is measured in seconds and is the time it takes to write the next letter, newline decides if it should continue the text AFTER or IN THE NEXT line (BLAHBLAHBLAH) -frit
+    colored = False
+    color = "\033[0m"
+    colordic = {
+        "*" : "\033[31m",  # Red
+        "_" : "\033[33m",  # Yellow
+        "#" : "\033[32m"   # Green
+    }
     for char in text:
-        print(char, end='', flush=True)
-        wait(delay)
+        if char in colordic:
+            if not colored:
+                colored = True
+                color = colordic[char]
+            else:
+                colored = False
+                color = "\033[0m"
+            continue
+        else:
+            print(color + char, end='', flush=True)
+            wait(delay)
     if newline: # this is supposed to be a boolean, but for some reason you can use 1 and 0 so uhh yeah use that instead! -frit after realizing 0 and 1 are boolean values
         print()  # artificial /n
 
@@ -156,6 +173,8 @@ def FUNnames(name):
     match(name):
         case "hugo":
             return
+        case "INIB": # I NEED IRON BLOCKS -Romeo AKA The Admin (minecraft borey mode)
+            debug = 1
 
 
 # [OBJECT FUNCTIONS]: Mind torture for those who sinned in the dark ages, however we did not sin, we're just sadomasochistic programmers in search of killing boredom! -frit
@@ -293,21 +312,45 @@ def shop():
     selling = []
     for i in range(3):
         selling.append(merch[random.randint(0,(len(merch)-1))])
-    typewrite(f"There are 3 items on sale:", 0.02, 1)
-    typewrite(f"1) {selling[0]}", 0.02, 1)
-    typewrite(f"2) {selling[1]}", 0.02, 1)
-    typewrite(f"3) {selling[2]}", 0.02, 1)
-    typewrite(f"Coins: {player.coins}", 0.02, 1)
+    typewrite(f"These are the items on sale:", 0.02, 1)
+    typewrite(f"1) {selling[0]}", 0.02, 0); typewrite(f", costs: #{prices[selling[0]]}#", 0.02, 1) if prices[selling[0]] <= player.coins else typewrite(f", costs: *{prices[selling[0]]}*", 0.02, 1)
+    typewrite(f"2) {selling[1]}", 0.02, 0); typewrite(f", costs: #{prices[selling[1]]}#", 0.02, 1) if prices[selling[1]] <= player.coins else typewrite(f", costs: *{prices[selling[1]]}*", 0.02, 1)
+    typewrite(f"3) {selling[2]}", 0.02, 0); typewrite(f", costs: #{prices[selling[2]]}#", 0.02, 1) if prices[selling[2]] <= player.coins else typewrite(f", costs: *{prices[selling[2]]}*", 0.02, 1)
+    typewrite(f"Coins: _{player.coins}_", 0.02, 1) if player.coins > 0 else typewrite(f"Coins: *{player.coins}*", 0.02, 1)
 
-    typewrite(f"Will you buy something? (1-3)Items, 0)No", 0.02, 1)
-    a = int(input())
-    if not a:
-        typewrite(f"You left the shop emptyhanded", 0.02, 0)
-        return
-    else:
-        typewrite(f"You bought {selling[a - 1]}", 0.02, 0)
-        player.coins -= prices[selling[a - 1]]
-        player.inventory.append(selling[a - 1])
+    while True:
+        typewrite(f"Will you buy something? (1-3) Items, 0) No", 0.02, 1)
+        a = int(input())
+        if not a or a == "":
+            typewrite(f"You left the shop emptyhanded" if "Bought" in selling else "You left the shop", 0.02, 1)
+            break
+        elif selling[a - 1] == "Bought":
+            typewrite(f"You Already bought this item!", 0.02, 1)
+            wait(1)
+            clear()
+        elif prices[selling[a - 1]] > player.coins and selling[a - 1] != "Bought":
+            typewrite(f"You don't have enough coins to purchase this item...", 0.02, 1)
+            wait(1)
+            clear()
+        else:
+            typewrite(f"You bought {selling[a - 1]}", 0.02, 1);wait(1)
+            player.coins -= prices[selling[a - 1]]
+            player.inventory.append(selling[a - 1])
+            selling[a - 1] = "Bought"
+            clear()
+        typewrite(f"These are the items on sale:", 0.02, 1)
+        typewrite(f"1) {selling[0]}", 0.02, 1 if selling[0] == "Bought" else 0)
+        if selling[0] != "Bought":
+            typewrite(f", costs: #{prices[selling[0]]}#", 0.02, 1) if prices[selling[0]] <= player.coins else typewrite(f", costs: *{prices[selling[0]]}*", 0.02, 1)
+        typewrite(f"2) {selling[1]}", 0.02, 1 if selling[0] == "Bought" else 0)
+        if selling[1] != "Bought":
+            typewrite(f", costs: #{prices[selling[1]]}#", 0.02, 1) if prices[selling[1]] <= player.coins else typewrite(f", costs: *{prices[selling[1]]}*", 0.02, 1)
+        typewrite(f"3) {selling[2]}", 0.02, 1 if selling[0] == "Bought" else 0)
+        if selling[2] != "Bought":
+            typewrite(f", costs: #{prices[selling[2]]}#", 0.02, 1) if prices[selling[2]] <= player.coins else typewrite(f", costs: *{prices[selling[2]]}*", 0.02, 1)
+        print()
+        typewrite(f"Coins: _{player.coins}_", 0.02, 1) if player.coins > 0 else typewrite(f"Coins: *{player.coins}*", 0.02, 1)
+    return
 
 
 # combat: is a fuckin' combat dude, it's not even that hard to read the code, it is easy to understand -omar
@@ -481,7 +524,7 @@ if not debug:
     typewrite("-----------",0.01, 0);typewrite("WELCOME, TO RPG.PY!",0.1, 0);typewrite("-----------", 0.01, 1)
     typewrite("-----------------------------------------", 0.01, 1)
     wait(1);clear()
-    typewrite("First of all, let's pick your name...", 0.1, 1)
+    typewrite("*First of all, let's pick your name...*", 0.1, 1)
     wait(1)
     typewrite("Would you rather have a random name... ", 0.05, 0);wait(0.5);typewrite("or be able to choose your own? (0, 1): ", 0.05, 0)
     q = int(input(""))
@@ -506,15 +549,17 @@ if not debug:
 
 
 while run:
+    if not run:
+        break
     defstructure(random.randint(0, (len(structures)-1)))
     wait(1)
     shop()
     if random.randint(0,4) == 4:
         combat()
-        current_time = cycle[daycycle[time]]
+        if player.HP != 0:
+            current_time = cycle[daycycle[time]]
     if player.XP > player.XPR:  # triggers lvlup
         lvlup()
-    if not run:
-        break
 
-# [Eight commit???????????????????????????????????????????????]
+
+# [I NEED MORE IRON BLOCKS!!!!]
