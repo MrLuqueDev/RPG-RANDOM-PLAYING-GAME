@@ -47,7 +47,7 @@ class player:
     name = None # None because we can't fucking get the function from the bottom here :C -frit
     HP = 100
     RES = 10
-    ATK = 10
+    ATK = 20
     SPD = 5
     LCK = 10
     CLASS = random.choice(class_list)
@@ -296,9 +296,9 @@ def lvlup():
     global player
     player.LVL += 1
     player.HP += 5
-    player.RES += 1
+    player.RES += 2
     if player.LVL % 2 == 0:
-        player.ATK += 1
+        player.ATK += 2
     if player.CLASS == "Wizard": # only wizards can use mana
         player.MANA += 5
     overflow_xp = max(player.XP - player.XPR, 0)
