@@ -47,7 +47,7 @@ class player:
     name = None # None because we can't fucking get the function from the bottom here :C -frit
     HP = 100
     RES = 10
-    ATK = 20
+    ATK = 25
     SPD = 5
     LCK = 10
     CLASS = random.choice(class_list)
@@ -395,105 +395,89 @@ def combat(): # -jlf
         elvl = random.randint(2, 4)
     elif structure == "Castle":
         elvl = random.randint(3, 5)
+    else:
+        elvl = 1
 
     defenemy(elvl) # creates an enemy -jlf
 
     clear()
-    
+
     # after creating enemy stats you introduce him to the combat
 
     typewrite(f"A {enemy.name} appeared!", 0.1, 1) # take a very fucking wild guess -jlf
-    wait(1);clear()
-    typewrite(f"Enemy stats:", 0.1, 1)
+    wait(1)
+    clear()
+    typewrite("Enemy stats:", 0.1, 1)
     typewrite(f"HP: {enemy.HP}", 0.1, 1)
     typewrite(f"ATK: {enemy.ATK}", 0.1, 1)
     typewrite(f"RES: {enemy.RES}", 0.1, 1)
-    wait(1.5);clear()
+    wait(1.5)
+    clear()
 
-    # set the damages -jlf
+    # damage calcs -jlf 
     player_dmg = max(0, player.ATK - enemy.RES)
     enemy_dmg = max(0, enemy.ATK - player.RES)
 
     # combat loop -jlf
-    while player.HP >= 0 and enemy.HP >= 0: 
-        
+    while player.HP > 0 and enemy.HP > 0:
+
         wait(1)
 
-        # sets the crit hit -jlf
+        # sets crits -jlf
 
         player_crit = random.random() < (player.LCK / 100)
         enemy_crit = random.random() < (enemy.LCK / 100)
-        
-        # player deals a critical hit -jlf
+
+        # creates a var with the dmg and if crit so damage doesnt become a float after the previous division
+
+        damage_to_enemy = player_dmg * 1.5 if player_crit else player_dmg
+        damage_to_player = enemy_dmg * 1.5 if enemy_crit else enemy_dmg
+
+        # player hit
 
         if player_crit:
-            player_dmg *= 1.5
-            typewrite(f"{player.name} made a critical hit", 0.05, 0);typewrite("...", 0.07, 1)
-            wait(0.1)
-            typewrite(f"{player.name} dealt {player_dmg} DMG! Enemy HP: {enemy.HP}", 0.05, 1) 
-            wait(0.5)
+            typewrite(f"{player.name} made a critical hit...", 0.05, 1)
+        typewrite(f"{player.name} dealt {damage_to_enemy} DMG! Enemy HP: {enemy.HP}", 0.05, 1)
 
-        # regular damage -jlf
-
-        if not player_crit:
-            typewrite(f"{player.name} dealt {player_dmg} DMG! Enemy HP: {enemy.HP}", 0.05, 1)
-            wait(0.5)
-
-        # enemy deals a critical hit -jlf
+        # enemy hit
 
         if enemy_crit:
-            enemy_dmg *= 1.5
-            typewrite(f"{enemy.name} made a critical hit", 0.05, 0);typewrite("...", 0.07, 1)
-            wait(0.1)
-            typewrite(f"{enemy.name} dealt {enemy_dmg} DMG! Your HP: {player.HP}", 0.05, 1)
-            wait(0.5)
+            typewrite(f"{enemy.name} made a critical hit...", 0.05, 1)
+        typewrite(f"{enemy.name} dealt {damage_to_player} DMG! Your HP: {player.HP}", 0.05, 1)
 
-        # REGULAR HURTING AN ENEMY BRO :sob: -frit
+        # HP calcs
 
-        if not enemy_crit:
-            typewrite(f"{enemy.name} dealt {enemy_dmg} DMG! Your HP: {player.HP}", 0.05, 1)
-            wait(0.5)
+        enemy.HP -= damage_to_enemy
+        player.HP -= damage_to_player
 
-        # deal the damage -jlf
-
-        enemy.HP -= player_dmg
-        player.HP -= enemy_dmg
-
-        # reseting crits -jlf
-
-        if player_crit:
-            player_dmg /= 1.5
-        if enemy_crit:
-            enemy_dmg /= 1.5
-        
-        player_crit = False
-        enemy_crit = False
-
-        # heal -frit
+        # healing
 
         if player.HP < 25:
             for item in player.inventory:
                 if item.startswith("Potion"):
                     player.inventory.remove(item)
-                    typewrite(f"{player.name} drank a potion", 0.05, 0)
-                    typewrite("...", 0.07, 1)
-                    wait(0.1)
-                    typewrite(f"It healed {pot_dic[item]} HP! Your HP: {player.HP}", 0.1, 1)
-                    player.HP += pot_dic[item]
+                    typewrite(f"{player.name} drank a potion...", 0.05, 1)
+                    heal_amount = pot_dic[item]
+                    player.HP += heal_amount
+                    typewrite(f"It healed {heal_amount} HP! Your HP: {player.HP}", 0.05, 1)
                     wait(0.5)
                     break
-        
-        wait(1.5);clear()
-            
+
+        wait(1.5)
+        clear()
+
+    # death :3
+
     if player.HP <= 0:
-        typewrite("you died, skill issue", 0.1, 1)
+        typewrite("You died, skill issue", 0.1, 1)
         typewrite(f"Your maximum reached level was: {player.LVL}", 0.1, 1)
         run = False
     else:
-        typewrite(f"you killed {enemy.name}!", 0.1, 1) # the XP var is to print the value of the xp gained. -jlf
+        typewrite(f"You killed {enemy.name}!", 0.1, 1)
         XP = 10 + (elvl * 5)
         typewrite(f"You earned {XP} XP!", 0.1, 1)
         player.XP += XP
+
 
 # [STRUCTURE FUNCTIONS]: brainfuck -frit
 
@@ -601,9 +585,9 @@ while run:
     if random.randint(0,4) == 4:
         combat()
         if player.HP != 0:
-            current_time = cycle[daycycle[time]]
+            current_time = time[daycycle[cycle]]
     if player.XP > player.XPR:  # triggers lvlup
         lvlup()
 
 
-# [sybau emo]
+# [i hate ts]
